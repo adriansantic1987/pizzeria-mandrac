@@ -4,7 +4,7 @@ import { Clock, MapPin, Phone, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function ContactInfo() {
-  const whatsAppLink = "https://wa.me/385994111894?text=Pozdrav!%20%C5%BDelio%20bih%20rezervirati%20stol%20u%20Bistrou%20Top.%20Ime%20i%20prezime%3A%20%2C%20Broj%20ljudi%3A%20%2C%20Datum%20i%20vrijeme%3A%20";
+  const whatsAppLink = "https://wa.me/38551850404?text=Pozdrav!%20%C5%BDelio%20bih%20rezervirati%20stol%20u%20Pizzeriji%20Mandra%C4%87.%20Ime%20i%20prezime%3A%20%2C%20Broj%20ljudi%3A%20%2C%20Datum%20i%20vrijeme%3A%20";
 
   return (
     <section id="contact" className="py-24 bg-ivory-50 px-4 sm:px-6 lg:px-8 border-t border-ivory-200/40">
@@ -20,13 +20,13 @@ export default function ContactInfo() {
             className="lg:col-span-5 flex flex-col justify-between space-y-8"
           >
             <div>
-              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-sea-600 uppercase font-semibold">
+              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-[#C1682B] uppercase font-semibold">
                 Posjetite nas
               </span>
               <h2 className="font-serif text-3xl sm:text-5xl font-bold text-chocolate-900 mt-3 mb-4">
                 Kontakt & Lokacija
               </h2>
-              <div className="h-0.5 w-16 bg-sea-600/80 rounded mb-6" />
+              <div className="h-0.5 w-16 bg-[#C1682B] rounded mb-6" />
             </div>
 
             {/* Details list */}
@@ -40,12 +40,12 @@ export default function ContactInfo() {
                 <div>
                   <h4 className="font-serif text-base font-semibold text-chocolate-900 uppercase">Adresa</h4>
                   <a
-                    href="https://maps.google.com/?q=Vela+Placa+3,+51500+Krk,+Croatia"
+                    href="https://maps.google.com/?q=Rova+22,+51511+Zidari%C4%87i,+Croatia"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-0.5 block text-chocolate-850 font-sans font-light text-sm hover:text-sea-600 transition-colors"
                   >
-                    Vela Placa 3, 51500 Krk, Hrvatska
+                    Rova 22, 51511 Zidarići, Hrvatska
                   </a>
                 </div>
               </div>
@@ -56,15 +56,23 @@ export default function ContactInfo() {
                   <Clock className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="font-serif text-base font-semibold text-chocolate-900 uppercase">Radno vrijeme (Ljeto)</h4>
-                  <div className="mt-0.5 space-y-0.5 text-chocolate-850 font-sans font-light text-sm">
-                    <p className="flex justify-between w-48 sm:w-52">
-                      <span>Pon - Sub:</span>
-                      <span className="text-chocolate-900 font-normal">12:00 - 23:00</span>
+                  <h4 className="font-serif text-base font-semibold text-chocolate-900 uppercase">Radno vrijeme</h4>
+                  <div className="mt-0.5 space-y-1 text-chocolate-850 font-sans font-light text-sm">
+                    <p className="flex justify-between w-56 sm:w-64">
+                      <span>Pon, Uto, Čet - Ned:</span>
+                      <span className="text-chocolate-900 font-normal">13:00 - 22:00</span>
                     </p>
-                    <p className="flex justify-between w-48 sm:w-52">
-                      <span>Nedjelja:</span>
-                      <span className="text-chocolate-900 font-normal">12:00 - 22:00</span>
+                    <p className="flex justify-between w-56 sm:w-64 text-red-700">
+                      <span>Srijeda:</span>
+                      <span className="font-semibold">Zatvoreno</span>
+                    </p>
+                    <p className="flex justify-between w-56 sm:w-64 pt-1 text-xs border-t border-ivory-200/60">
+                      <span>Kuhinja:</span>
+                      <span className="text-chocolate-900 font-normal">13:00 - 21:30</span>
+                    </p>
+                    <p className="flex justify-between w-56 sm:w-64 text-xs">
+                      <span>Takeaway:</span>
+                      <span className="text-chocolate-900 font-normal">13:00 - 18:00</span>
                     </p>
                   </div>
                 </div>
@@ -79,13 +87,13 @@ export default function ContactInfo() {
                   <h4 className="font-serif text-base font-semibold text-chocolate-900 uppercase">Kontakt za informacije</h4>
                   <div className="mt-0.5 space-y-0.5 text-chocolate-850 font-sans font-light text-sm">
                     <p>
-                      <a href="tel:+385994111894" className="hover:text-sea-600 transition-colors">
-                        +385 99 411 1894
+                      <a href="tel:051850404" className="hover:text-sea-600 transition-colors font-medium">
+                        051 850 404
                       </a>
                     </p>
                     <p>
-                      <a href="mailto:info@bistrotopkrk.com" className="hover:text-sea-600 transition-colors">
-                        info@bistrotopkrk.com
+                      <a href="mailto:info@pizzeriamandrac.com" className="hover:text-sea-600 transition-colors">
+                        info@pizzeriamandrac.com
                       </a>
                     </p>
                   </div>
@@ -97,14 +105,14 @@ export default function ContactInfo() {
             {/* Embedded Google Map */}
             <div className="w-full h-[220px] rounded-2xl overflow-hidden border border-ivory-200 shadow-soft relative bg-ivory-100">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2800.785025700889!2d14.573617376594247!3d45.02619707107293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4764a85b9a4c0c1b%3A0x6d90a6e87f8f9e0!2sVela%20Placa%203%2C%2051500%2C%20Krk%2C%20Croatia!5e0!3m2!1sen!2shr!4v1715000000000!5m2!1sen!2shr"
+                src="https://maps.google.com/maps?q=Rova%2022,%2051511%20Zidari%C4%87i,%20Croatia&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen={true}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Bistro Top Krk Google Maps Location"
+                title="Pizzeria Mandrać Google Maps Location"
               ></iframe>
             </div>
 
@@ -124,7 +132,7 @@ export default function ContactInfo() {
                   Rezervacija stola
                 </h3>
                 <p className="text-chocolate-850 font-sans font-light text-sm mt-2 leading-relaxed">
-                  Želite osigurati svoje mjesto u našem bistrou? Odaberite jedan od dva brza načina rezervacije stola ispod. Odgovorit ćemo vam i potvrditi rezervaciju u najkraćem roku.
+                  Želite osigurati svoje mjesto u našoj pizzeriji? Odaberite jedan od dva brza načina rezervacije stola ispod. Odgovorit ćemo vam i potvrditi rezervaciju u najkraćem roku.
                 </p>
               </div>
 
@@ -147,19 +155,19 @@ export default function ContactInfo() {
 
                 {/* Call reservation link */}
                 <a
-                  href="tel:+385994111894"
-                  className="bg-sea-600 hover:bg-sea-700 active:scale-99 text-white font-sans font-semibold py-4 rounded-xl flex flex-col items-center justify-center space-y-2 shadow-soft hover:shadow-active transition-all duration-300 text-center cursor-pointer p-4 border border-white/10"
+                  href="tel:051850404"
+                  className="bg-[#C1682B] hover:bg-[#A9551E] active:scale-99 text-white font-sans font-semibold py-4 rounded-xl flex flex-col items-center justify-center space-y-2 shadow-soft hover:shadow-active transition-all duration-300 text-center cursor-pointer p-4 border border-white/10"
                 >
                   <Phone className="h-7 w-7 text-white" />
                   <span className="text-sm font-bold">Rezerviraj pozivom</span>
-                  <span className="text-[10px] opacity-80 font-normal">Izravan telefonski poziv</span>
+                  <span className="text-[10px] opacity-80 font-normal">Izravan poziv na 051 850 404</span>
                 </a>
 
               </div>
 
               {/* Informational Tip box */}
               <div className="bg-ivory-100/50 p-4 rounded-xl border border-ivory-200 mt-6 flex items-start space-x-3 text-left">
-                <MessageSquare className="h-5 w-5 text-sea-600 flex-shrink-0 mt-0.5" />
+                <MessageSquare className="h-5 w-5 text-[#C1682B] flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-chocolate-800 font-sans font-light leading-relaxed">
                   <strong className="font-semibold text-chocolate-900">Napomena za WhatsApp:</strong> Klikom na gumb otvorit će se chat s unaprijed unesenom porukom. Samo upišite svoje ime, broj gostiju i željeni termin rezervacije te pošaljite poruku.
                 </p>

@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
             <Utensils className="h-6 w-6 text-[#DFB283]" />
           </div>
           <h1 className="font-serif text-2xl font-bold tracking-wide text-ivory-100 uppercase">
-            Bistro Top
+            Pizzeria Mandrać
           </h1>
           <p className="text-xs text-ivory-300 tracking-wider uppercase">
             Administracijska Prijava

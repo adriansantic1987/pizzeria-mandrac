@@ -88,7 +88,7 @@ function ReviewItem({ review }: { review: TranslatedReview }) {
       {isTruncated && (
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-sea-600 hover:text-sea-700 dark:text-sea-250 dark:hover:text-sea-100 font-sans text-xs font-semibold uppercase tracking-wider focus:outline-none mt-1 transition-colors duration-200 cursor-pointer"
+          className="text-[#C1682B] hover:text-[#A9551E] dark:text-[#DFB283] dark:hover:text-white font-sans text-xs font-semibold uppercase tracking-wider focus:outline-none mt-1 transition-colors duration-200 cursor-pointer"
         >
           {isExpanded ? showLessText : readMoreText}
         </button>
@@ -264,13 +264,13 @@ export default function AboutUs() {
             className="space-y-6 sm:space-y-8"
           >
             <div>
-              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-sea-600 dark:text-sea-200 uppercase font-semibold">
+              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
                 {dict.about.tagline}
               </span>
               <h2 className="font-serif text-3xl sm:text-5xl font-bold text-chocolate-900 dark:text-ivory-100 mt-3 mb-4">
                 {dict.about.title}
               </h2>
-              <div className="h-0.5 w-16 bg-sea-600 dark:bg-sea-600 rounded" />
+              <div className="h-0.5 w-16 bg-[#C1682B] dark:bg-[#DFB283] rounded" />
             </div>
 
             <p className="text-chocolate-850 dark:text-ivory-200 font-sans font-light text-sm sm:text-base leading-relaxed">
@@ -308,7 +308,7 @@ export default function AboutUs() {
             <div className="mt-8 pt-8 border-t border-ivory-200/60 dark:border-chocolate-850/40 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-0 sm:divide-x sm:divide-ivory-200/60 dark:sm:divide-chocolate-850/40">
               {/* Stat 1 */}
               <div className="flex flex-col items-center text-center px-4 space-y-1">
-                <Calendar className="h-5 w-5 text-sea-600 dark:text-sea-250 mb-1" />
+                <Calendar className="h-5 w-5 text-[#C1682B] dark:text-[#DFB283] mb-1" />
                 <span className="font-serif text-lg sm:text-xl font-bold text-chocolate-900 dark:text-ivory-100">
                   {statsTranslations[language].experienceVal}
                 </span>
@@ -318,7 +318,7 @@ export default function AboutUs() {
               </div>
               {/* Stat 2 */}
               <div className="flex flex-col items-center text-center px-4 space-y-1">
-                <Leaf className="h-5 w-5 text-sea-600 dark:text-sea-250 mb-1" />
+                <Leaf className="h-5 w-5 text-[#C1682B] dark:text-[#DFB283] mb-1" />
                 <span className="font-serif text-lg sm:text-xl font-bold text-chocolate-900 dark:text-ivory-100">
                   {statsTranslations[language].freshVal}
                 </span>
@@ -328,7 +328,7 @@ export default function AboutUs() {
               </div>
               {/* Stat 3 */}
               <div className="flex flex-col items-center text-center px-4 space-y-1">
-                <Star className="h-5 w-5 text-sea-600 dark:text-sea-250 mb-1" />
+                <Star className="h-5 w-5 text-[#C1682B] dark:text-[#DFB283] mb-1" />
                 <span className="font-serif text-lg sm:text-xl font-bold text-chocolate-900 dark:text-ivory-100">
                   {ratingValue}★
                 </span>
@@ -348,7 +348,7 @@ export default function AboutUs() {
             className="space-y-6"
           >
             <div>
-              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-sea-600 dark:text-sea-200 uppercase font-semibold">
+              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
                 {dict.about.reviews_tagline}
               </span>
               <h3 className="font-serif text-2xl sm:text-3xl font-bold text-chocolate-900 dark:text-ivory-100 mt-3 mb-2">
@@ -364,7 +364,7 @@ export default function AboutUs() {
                   {googleScoreText}
                 </span>
               </div>
-              <div className="h-0.5 w-16 bg-sea-600 dark:bg-sea-600 rounded" />
+              <div className="h-0.5 w-16 bg-[#C1682B] dark:bg-[#DFB283] rounded" />
             </div>
 
             {/* Reviews List */}

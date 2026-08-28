@@ -3,7 +3,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useState, useEffect } from "react";
-import { Utensils, Instagram, Facebook, Twitter, Phone, MapPin, Clock } from "lucide-react";
+import Image from "next/image";
+import { Instagram, Facebook, Twitter, Phone, MapPin, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -83,7 +84,7 @@ export default function Footer() {
       .replace("{time}", bookingTime);
 
     const encodedText = encodeURIComponent(text);
-    const link = `https://wa.me/385994111894?text=${encodedText}`;
+    const link = `https://wa.me/38551850404?text=${encodedText}`;
     window.open(link, "_blank");
   };
 
@@ -104,13 +105,13 @@ export default function Footer() {
             className="lg:col-span-5 flex flex-col justify-between space-y-6"
           >
             <div>
-              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-sea-600 dark:text-sea-250 uppercase font-semibold">
+              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
                 {dict.footer.contact_tagline}
               </span>
               <h2 className="font-serif text-3xl sm:text-5xl font-bold text-chocolate-900 dark:text-ivory-50 mt-3 mb-4">
                 {dict.footer.visit_us}
               </h2>
-              <div className="h-0.5 w-16 bg-sea-600/80 dark:bg-sea-600 rounded" />
+              <div className="h-0.5 w-16 bg-[#C1682B] dark:bg-[#DFB283] rounded" />
             </div>
 
             {/* Hours & Address Cards */}
@@ -126,7 +127,7 @@ export default function Footer() {
                 </div>
                 <div className="mt-2.5 pl-7">
                   <a
-                    href="https://maps.google.com/?q=Vela+Placa+3,+51500+Krk,+Croatia"
+                    href="https://maps.google.com/?q=Rova+22,+51511+Zidari%C4%87i,+Croatia"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-chocolate-850 dark:text-ivory-200 font-sans font-light text-sm hover:text-sea-600 dark:hover:text-sea-250 transition-colors"
@@ -146,10 +147,10 @@ export default function Footer() {
                 </div>
                 <div className="mt-2.5 pl-7 text-chocolate-850 dark:text-ivory-200 font-sans font-light text-sm space-y-1">
                   {openingHours && openingHours.map((h: any) => (
-                    <p key={h.id || h.day_group} className="flex justify-between w-48 sm:w-52">
+                    <p key={h.id || h.day_group} className="flex justify-between w-48 sm:w-56">
                       <span>{h.day_group}:</span>
                       <span className="text-chocolate-900 dark:text-white font-normal">
-                        {h.open_time} - {h.close_time}
+                        {h.open_time} {h.close_time !== "Zatvoreno" ? `- ${h.close_time}` : ""}
                       </span>
                     </p>
                   ))}
@@ -161,7 +162,7 @@ export default function Footer() {
             {/* Embedded Google Map */}
             <div className="relative w-full h-[220px] rounded-2xl overflow-hidden border border-ivory-200 dark:border-chocolate-850/50 shadow-soft dark:shadow-none bg-white dark:bg-[#26201B] p-1">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2800.785025700889!2d14.573617376594247!3d45.02619707107293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4764a85b9a4c0c1b%3A0x6d90a6e87f8f9e0!2sVela%20Placa%203%2C%2051500%2C%20Krk%2C%20Croatia!5e0!3m2!1sen!2shr!4v1715000000000!5m2!1sen!2shr"
+                src="https://maps.google.com/maps?q=Rova%2022,%2051511%20Zidari%C4%87i,%20Croatia&t=&z=15&ie=UTF8&iwloc=&output=embed"
                 width="100%"
                 height="100%"
                 style={{ 
@@ -170,14 +171,14 @@ export default function Footer() {
                 allowFullScreen={true}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Bistro Top Krk Google Maps Location"
+                title="Pizzeria Mandrać Google Maps Location"
                 className="rounded-xl dark:invert-[90%] dark:hue-rotate-[180deg] dark:contrast-[85%] dark:brightness-[90%]"
               ></iframe>
               
               {/* Custom 'Open in Maps' Button overlay */}
               <div className="absolute bottom-3 right-3 z-10">
                 <a
-                  href="https://maps.google.com/?q=Vela+Placa+3,+51500+Krk,+Croatia"
+                  href="https://maps.google.com/?q=Rova+22,+51511+Zidari%C4%87i,+Croatia"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-chocolate-900 dark:bg-chocolate-800 hover:bg-chocolate-850 dark:hover:bg-chocolate-700 active:scale-[0.99] text-white font-sans text-[10px] font-semibold px-3.5 py-2 rounded-lg shadow-soft hover:shadow-active transition-all duration-300 uppercase tracking-wider block"
@@ -327,7 +328,7 @@ export default function Footer() {
 
               {/* Quiet Luxury Voice Contact Button */}
               <a
-                href="tel:+385994111894"
+                href="tel:051850404"
                 className="w-full border border-chocolate-900 dark:border-[#C1682B] text-chocolate-900 dark:text-[#DFB283] hover:bg-chocolate-900 dark:hover:bg-[#C1682B] hover:text-white dark:hover:text-white active:scale-[0.99] font-sans font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center space-x-2.5 shadow-soft hover:shadow-active transition-all duration-300 cursor-pointer text-xs sm:text-sm uppercase tracking-wider"
               >
                 <Phone className="h-4.5 w-4.5 flex-shrink-0" />
@@ -344,10 +345,16 @@ export default function Footer() {
           
           {/* Logo & Info */}
           <div className="flex flex-col items-center md:items-start space-y-2">
-            <a href="#home" className="flex items-center space-x-2 group">
-              <Utensils className="h-5 w-5 text-sea-600 dark:text-sea-250 group-hover:rotate-12 transition-transform duration-300" />
+            <a href="#home" className="flex items-center space-x-2.5 group">
+              <Image
+                src="/image/logo.png"
+                alt="Pizzeria Mandrać Logo"
+                width={32}
+                height={32}
+                className="h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+              />
               <span className="font-serif text-lg font-bold tracking-wide text-chocolate-900 dark:text-ivory-100">
-                Bistro Top
+                Pizzeria Mandrać
               </span>
             </a>
             <p className="text-chocolate-800 dark:text-ivory-300 font-sans font-light text-xs">

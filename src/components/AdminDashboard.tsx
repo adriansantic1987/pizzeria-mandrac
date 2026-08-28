@@ -323,7 +323,7 @@ export default function AdminDashboard({
       <header className="bg-[#26201B] border-b border-chocolate-850/50 px-6 py-4 flex items-center justify-between shadow-premium z-10">
         <div className="flex items-center space-x-3">
           <span className="font-serif text-lg sm:text-xl font-bold tracking-wide uppercase text-white">
-            Bistro Top Admin
+            Pizzeria Mandrać Admin
           </span>
           <span className="bg-[#C1682B]/20 text-[#DFB283] text-[9px] uppercase tracking-wider px-2.5 py-1 rounded-full border border-[#C1682B]/25">
             Upravljačka Ploča

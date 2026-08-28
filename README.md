@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pizzeria Mandrać
+
+This is a Next.js web application for **Pizzeria Mandrać** in Zidarići, Malinska, Krk Island, Croatia.
 
 ## Getting Started
 

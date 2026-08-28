@@ -66,22 +66,22 @@ export default function VacationModal() {
   const messages = {
     hr: {
       title: "Godišnji Odmor",
-      text: `Bistro Top je na godišnjem odmoru i ne radi od ${formattedStart} do ${formattedEnd}.`,
+      text: `Pizzeria Mandrać je na godišnjem odmoru i ne radi od ${formattedStart} do ${formattedEnd}.`,
       close: "Zatvori",
     },
     en: {
       title: "Vacation Notice",
-      text: `Bistro Top is on vacation and will be closed from ${formattedStart} to ${formattedEnd}.`,
+      text: `Pizzeria Mandrać is on vacation and will be closed from ${formattedStart} to ${formattedEnd}.`,
       close: "Close",
     },
     de: {
       title: "Urlaubshinweis",
-      text: `Bistro Top ist im Urlaub und bleibt vom ${formattedStart} bis zum ${formattedEnd} geschlossen.`,
+      text: `Pizzeria Mandrać ist im Urlaub und bleibt vom ${formattedStart} bis zum ${formattedEnd} geschlossen.`,
       close: "Schließen",
     },
     it: {
       title: "Avviso di Chiusura",
-      text: `Bistro Top è in vacanza e rimarrà chiuso dal ${formattedStart} al ${formattedEnd}.`,
+      text: `Pizzeria Mandrać è in vacanza e rimarrà chiuso dal ${formattedStart} al ${formattedEnd}.`,
       close: "Chiudi",
     },
   };

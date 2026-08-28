@@ -19,8 +19,50 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Bistro Top | Krk Island Mediterranean Grill & Peka",
-  description: "Savor authentic Mediterranean dining at Bistro Top on Krk Island, Croatia. Specializing in traditional charcoal grill, slow-cooked lamb and veal peka, and fresh seafood.",
+  title: "Pizzeria Mandrać | Malinska Krk Island Pizzeria & Grill",
+  description: "Enjoy authentic wood-fired pizzas, charcoal grill, and delicious meals at Pizzeria Mandrać in Zidarići, Malinska, Krk Island, Croatia.",
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Pizzeria Mandrać",
+  "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1200&q=80",
+  "telephone": "051 850 404",
+  "priceRange": "€15–20",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rova 22",
+    "addressLocality": "Zidarići",
+    "postalCode": "51511",
+    "addressCountry": "HR"
+  },
+  "servesCuisine": ["Pizza", "Mediterranean", "Grill"],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "13:00",
+      "closes": "22:00"
+    }
+  ],
+  "amenityFeature": [
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Outdoor seating available",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Wi-Fi",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Good for kids",
+      "value": true
+    }
+  ]
 };
 
 export default async function RootLayout({
@@ -36,6 +78,10 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -65,3 +111,4 @@ export default async function RootLayout({
     </html>
   );
 }
+

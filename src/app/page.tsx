@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import AboutUs from "@/components/AboutUs";
 import MenuSection from "@/components/Menu/MenuSection";
+import GallerySection from "@/components/GallerySection";
 import Footer from "@/components/Footer";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import VacationModal from "@/components/VacationModal";
@@ -28,6 +29,9 @@ export default function Home() {
 
         {/* Menu Cards List Section */}
         <MenuSection />
+
+        {/* Photo Gallery Carousel Section */}
+        <GallerySection />
       </main>
 
       {/* Footer Area with consolidated Address, Hours, Maps and Action Box */}

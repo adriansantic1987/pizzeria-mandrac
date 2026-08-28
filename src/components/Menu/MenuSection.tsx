@@ -9,11 +9,11 @@ import { useLanguage } from "@/context/LanguageContext";
 import useSWR from "swr";
 
 const CATEGORY_BANNERS: Record<string, string> = {
-  pizze: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=85",
-  rostilj: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=85",
-  peka: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?auto=format&fit=crop&w=1200&q=85",
-  riba: "https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?auto=format&fit=crop&w=1200&q=85",
-  predjela_deserti: "https://images.unsplash.com/photo-1541532713592-79a0317b6b77?auto=format&fit=crop&w=1200&q=85",
+  pizze: "/image/pizza.jpg",
+  rostilj: "/image/rostilj.jpg",
+  predjela: "/image/pizza.jpg",
+  deserti: "/image/pizza.jpg",
+  salate: "/image/pizza.jpg",
 };
 
 export default function MenuSection() {
@@ -46,13 +46,13 @@ export default function MenuSection() {
         
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-sea-600 dark:text-sea-250 uppercase font-semibold">
+          <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
             {dict.menu.tagline}
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl font-bold text-chocolate-900 dark:text-ivory-100 mt-3 mb-4 font-black">
             {dict.menu.title}
           </h2>
-          <div className="h-0.5 w-16 bg-sea-600 dark:bg-sea-600 mx-auto rounded mb-4" />
+          <div className="h-0.5 w-16 bg-[#C1682B] dark:bg-[#DFB283] mx-auto rounded mb-4" />
           <p className="text-chocolate-850 dark:text-ivory-200 font-sans font-light text-sm sm:text-base leading-relaxed">
             {dict.menu.subtitle}
           </p>
@@ -78,7 +78,7 @@ export default function MenuSection() {
                     <motion.div
                       layoutId="activeCategoryBg"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      className="absolute inset-0 bg-sea-600 rounded-full z-0"
+                      className="absolute inset-0 bg-[#C1682B] rounded-full z-0"
                     />
                   )}
                   <span className="relative z-10">{displayName}</span>

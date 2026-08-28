@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { updateTag } from "next/cache";
-import { supabaseAdmin } from "@/utils/supabase";
+import { getBistroData, writeBackupCache } from "@/utils/cache";
 
 // Auth Check Helper
 async function checkAuth() {
@@ -53,27 +53,26 @@ export async function createMenuItem(formData: {
 }) {
   await checkAuth();
 
-  // Find max display_order to append
-  const { data: currentItems } = await supabaseAdmin
-    .from("menu_items")
-    .select("display_order")
-    .eq("category", formData.category)
-    .order("display_order", { ascending: false })
-    .limit(1);
+  const data = await getBistroData();
+  const menuItems = data.menu_items || [];
 
-  const nextOrder = currentItems && currentItems[0] ? currentItems[0].display_order + 1 : 0;
+  const categoryItems = menuItems.filter((i: any) => i.category === formData.category);
+  const maxOrder = categoryItems.reduce((max: number, item: any) => Math.max(max, item.display_order ?? 0), -1);
+  const nextOrder = formData.display_order ?? (maxOrder + 1);
 
-  const { error } = await supabaseAdmin.from("menu_items").insert({
+  const newItem = {
     id: formData.id,
     category: formData.category,
     name: formData.name,
     description: formData.description,
     price: formData.price,
-    display_order: formData.display_order ?? nextOrder,
+    display_order: nextOrder,
     active: true
-  });
+  };
 
-  if (error) throw error;
+  data.menu_items = [...menuItems, newItem];
+  await writeBackupCache(data);
+
   updateTag("bistro-data");
   return { success: true };
 }
@@ -89,12 +88,15 @@ export async function updateMenuItem(
 ) {
   await checkAuth();
 
-  const { error } = await supabaseAdmin
-    .from("menu_items")
-    .update(updates)
-    .eq("id", id);
+  const data = await getBistroData();
+  data.menu_items = (data.menu_items || []).map((item: any) => {
+    if (item.id === id) {
+      return { ...item, ...updates };
+    }
+    return item;
+  });
 
-  if (error) throw error;
+  await writeBackupCache(data);
   updateTag("bistro-data");
   return { success: true };
 }
@@ -102,12 +104,10 @@ export async function updateMenuItem(
 export async function deleteMenuItem(id: string) {
   await checkAuth();
 
-  const { error } = await supabaseAdmin
-    .from("menu_items")
-    .delete()
-    .eq("id", id);
+  const data = await getBistroData();
+  data.menu_items = (data.menu_items || []).filter((item: any) => item.id !== id);
 
-  if (error) throw error;
+  await writeBackupCache(data);
   updateTag("bistro-data");
   return { success: true };
 }
@@ -115,48 +115,30 @@ export async function deleteMenuItem(id: string) {
 export async function reorderMenuItem(id: string, direction: "up" | "down") {
   await checkAuth();
 
-  // Get current item category and display_order
-  const { data: itemData, error: fetchError } = await supabaseAdmin
-    .from("menu_items")
-    .select("category, display_order")
-    .eq("id", id)
-    .single();
+  const data = await getBistroData();
+  const menuItems = data.menu_items || [];
 
-  if (fetchError || !itemData) throw new Error("Item not found");
+  const targetItem = menuItems.find((i: any) => i.id === id);
+  if (!targetItem) throw new Error("Item not found");
 
-  const { category, display_order } = itemData;
+  const categoryList = menuItems
+    .filter((i: any) => i.category === targetItem.category)
+    .sort((a: any, b: any) => (a.display_order ?? 0) - (b.display_order ?? 0));
 
-  // Get items in same category ordered by display_order
-  const { data: list } = await supabaseAdmin
-    .from("menu_items")
-    .select("id, display_order")
-    .eq("category", category)
-    .order("display_order", { ascending: true });
-
-  if (!list) return { success: false };
-
-  const currentIndex = list.findIndex((item) => item.id === id);
+  const currentIndex = categoryList.findIndex((i: any) => i.id === id);
   if (currentIndex === -1) return { success: false };
 
   const targetIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
-  if (targetIndex < 0 || targetIndex >= list.length) return { success: false }; // Bound checks
+  if (targetIndex < 0 || targetIndex >= categoryList.length) return { success: false };
 
-  const currentItem = list[currentIndex];
-  const targetItem = list[targetIndex];
+  const itemA = categoryList[currentIndex];
+  const itemB = categoryList[targetIndex];
 
-  // Swap display_order in Supabase
-  const { error: err1 } = await supabaseAdmin
-    .from("menu_items")
-    .update({ display_order: targetItem.display_order })
-    .eq("id", currentItem.id);
+  const tempOrder = itemA.display_order;
+  itemA.display_order = itemB.display_order;
+  itemB.display_order = tempOrder;
 
-  const { error: err2 } = await supabaseAdmin
-    .from("menu_items")
-    .update({ display_order: currentItem.display_order })
-    .eq("id", targetItem.id);
-
-  if (err1 || err2) throw new Error("Failed to swap order");
-
+  await writeBackupCache(data);
   updateTag("bistro-data");
   return { success: true };
 }
@@ -173,12 +155,15 @@ export async function updateOpeningHours(
 ) {
   await checkAuth();
 
-  const { error } = await supabaseAdmin
-    .from("opening_hours")
-    .update(updates)
-    .eq("id", id);
+  const data = await getBistroData();
+  data.opening_hours = (data.opening_hours || []).map((h: any) => {
+    if (h.id === id) {
+      return { ...h, ...updates };
+    }
+    return h;
+  });
 
-  if (error) throw error;
+  await writeBackupCache(data);
   updateTag("bistro-data");
   return { success: true };
 }
@@ -187,15 +172,31 @@ export async function updateOpeningHours(
 export async function updateSiteContent(key: string, language: string, value: string) {
   await checkAuth();
 
-  const { error } = await supabaseAdmin
-    .from("site_content")
-    .upsert({
-      key,
-      language: language.toLowerCase(),
-      value
-    });
+  const data = await getBistroData();
+  const langKey = language.toUpperCase();
 
-  if (error) throw error;
+  if (data.site_content && typeof data.site_content === "object" && !Array.isArray(data.site_content)) {
+    if (!data.site_content[langKey]) data.site_content[langKey] = {};
+    const parts = key.split(".");
+    let curr = data.site_content[langKey];
+    for (let i = 0; i < parts.length; i++) {
+      if (i === parts.length - 1) {
+        curr[parts[i]] = value;
+      } else {
+        if (!curr[parts[i]]) curr[parts[i]] = {};
+        curr = curr[parts[i]];
+      }
+    }
+  } else if (Array.isArray(data.site_content)) {
+    const existingIndex = data.site_content.findIndex((r: any) => r.key === key && r.language.toLowerCase() === language.toLowerCase());
+    if (existingIndex >= 0) {
+      data.site_content[existingIndex].value = value;
+    } else {
+      data.site_content.push({ key, language: language.toLowerCase(), value });
+    }
+  }
+
+  await writeBackupCache(data);
   updateTag("bistro-data");
   return { success: true };
 }
@@ -206,23 +207,15 @@ export async function updateVacationSettings(
 ) {
   await checkAuth();
 
-  try {
-    const { error } = await supabaseAdmin
-      .from("site_settings")
-      .upsert({
-        id: 1,
-        vacation_start: vacationStart || null,
-        vacation_end: vacationEnd || null
-      }, { onConflict: "id" });
+  const data = await getBistroData();
+  data.site_settings = {
+    ...(data.site_settings || {}),
+    vacation_start: vacationStart || null,
+    vacation_end: vacationEnd || null
+  };
 
-    if (error) throw error;
-  } catch (err: any) {
-    console.error("[Action updateVacationSettings] Error upserting settings:", err);
-    throw new Error(
-      "Nije moguće spremiti postavke godišnjeg odmora. Molimo provjerite je li tablica 'site_settings' stvorena u Supabase bazi."
-    );
-  }
-
+  await writeBackupCache(data);
   updateTag("bistro-data");
   return { success: true };
 }
+

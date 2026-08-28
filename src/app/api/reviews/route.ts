@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/utils/supabase";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 86400; // Default segment revalidation of 24 hours
@@ -63,36 +62,6 @@ const BACKUP_REVIEWS = [
 ];
 
 async function fetchFallbackReviews() {
-  try {
-    // 1. Try querying "reviews" table in Supabase
-    const { data: dbReviews, error: dbReviewsError } = await supabase
-      .from("reviews")
-      .select("*");
-      
-    if (!dbReviewsError && dbReviews && dbReviews.length > 0) {
-      console.log("[Reviews API Fallback] Successfully fetched reviews from fallback 'reviews' table.");
-      return dbReviews.filter((r: any) => r.rating >= 4);
-    }
-  } catch (err) {
-    console.warn("[Reviews API Fallback] Failed fetching from 'reviews' table:", err);
-  }
-
-  try {
-    // 2. Try querying "site_content" table in Supabase
-    const { data: dbSiteContent, error: dbContentError } = await supabase
-      .from("site_content")
-      .select("*")
-      .like("key", "reviews.item.%");
-
-    if (!dbContentError && dbSiteContent && dbSiteContent.length > 0) {
-      console.log("[Reviews API Fallback] Successfully fetched reviews from fallback 'site_content' table.");
-    }
-  } catch (err) {
-    console.warn("[Reviews API Fallback] Failed fetching from 'site_content' table:", err);
-  }
-
-  // 3. Fallback to local BACKUP_REVIEWS
-  console.log("[Reviews API Fallback] Using hardcoded backup reviews.");
   return BACKUP_REVIEWS;
 }
 

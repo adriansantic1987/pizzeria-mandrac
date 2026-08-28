@@ -1,27 +1,34 @@
-import { createClient } from "@supabase/supabase-js";
+/**
+ * Supabase client stubs - Disconnected for local static data mode.
+ * All database operations run entirely on local static data or local file cache.
+ */
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const createMockClient = () => {
+  const mockQueryBuilder = {
+    select: () => mockQueryBuilder,
+    insert: () => Promise.resolve({ data: null, error: null }),
+    update: () => mockQueryBuilder,
+    delete: () => mockQueryBuilder,
+    eq: () => mockQueryBuilder,
+    gt: () => mockQueryBuilder,
+    like: () => mockQueryBuilder,
+    order: () => mockQueryBuilder,
+    limit: () => mockQueryBuilder,
+    single: () => Promise.resolve({ data: null, error: null }),
+    maybeSingle: () => Promise.resolve({ data: null, error: null }),
+    upsert: () => Promise.resolve({ data: null, error: null }),
+    then: (resolve: any) => resolve({ data: [], error: null })
+  };
 
-// Public client for client-side queries (Read-Only under RLS)
-export const supabase = createClient(
-  supabaseUrl || "https://placeholder-url.supabase.co",
-  supabaseAnonKey || "placeholder-anon-key"
-);
-
-// Admin client for server-side queries and mutations (Bypasses RLS)
-export const supabaseAdmin = createClient(
-  supabaseUrl || "https://placeholder-url.supabase.co",
-  supabaseServiceKey || supabaseAnonKey || "placeholder-key"
-);
-
-// Check if credentials are properly configured
-export const isSupabaseConfigured = () => {
-  return (
-    !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.NEXT_PUBLIC_SUPABASE_URL !== "https://your-supabase-url.supabase.co" &&
-    !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== "your-supabase-anon-key"
-  );
+  return {
+    from: () => mockQueryBuilder
+  };
 };
+
+// Mock public and admin clients that prevent any external network calls
+export const supabase = createMockClient() as any;
+export const supabaseAdmin = createMockClient() as any;
+
+// Indicates Supabase is disconnected, app uses local static mode
+export const isSupabaseConfigured = () => false;
+

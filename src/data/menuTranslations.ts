@@ -76,7 +76,7 @@ export const MENU_TRANSLATIONS: Record<string, {
     }
   },
   "piz-10": {
-    name: { EN: "Bistro Top Special", IT: "Bistro Top Special", DE: "Bistro Top Spezial" },
+    name: { EN: "Pizzeria Mandrać Special", IT: "Pizzeria Mandrać Special", DE: "Pizzeria Mandrać Spezial" },
     description: {
       EN: "Tomato sauce, mozzarella, beef tenderloin strips, truffle cream and fresh arugula.",
       IT: "Salsa di pomodoro, mozzarella, straccetti di filetto di manzo, crema di tartufo e rucola fresca.",
@@ -110,7 +110,7 @@ export const MENU_TRANSLATIONS: Record<string, {
     }
   },
   "ros-4": {
-    name: { EN: "Mixed Meat 'Bistro Top'", IT: "Grigliata Mista 'Bistro Top'", DE: "Grillteller 'Bistro Top'" },
+    name: { EN: "Mixed Meat 'Pizzeria Mandrać'", IT: "Grigliata Mista 'Pizzeria Mandrać'", DE: "Grillteller 'Pizzeria Mandrać'" },
     description: {
       EN: "Charcoal classics: ćevapčići, pork skewer, marinated chicken fillet and local sausage served with french fries.",
       IT: "Grigliata classica: ćevapčići, spiedino di maiale, filetto di pollo marinato e salsiccia locale con patatine fritte.",

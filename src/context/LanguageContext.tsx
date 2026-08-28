@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { supabase } from "@/utils/supabase";
 import { FALLBACK_SITE_CONTENT } from "@/utils/fallbackData";
 import useSWR from "swr";
 
@@ -58,6 +57,12 @@ interface TranslationDictionary {
     hours_sunday: string;
     logo_desc: string;
     copyright: string;
+  };
+  gallery?: {
+    badge: string;
+    title_start: string;
+    title_highlight: string;
+    subtitle: string;
   };
   action_box: {
     reserve_title: string;

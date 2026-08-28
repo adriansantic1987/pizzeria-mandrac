@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { Flame, Pizza, Calendar, Leaf, Star } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import useSWR from "swr";
 
@@ -33,7 +33,6 @@ function ReviewItem({ review }: { review: TranslatedReview }) {
   const reviewText = review.text[langKey] || review.text.hr;
   const reviewTime = review.relative_time_description[langKey] || review.relative_time_description.hr;
 
-  // Measure if text overflows 3 lines (which is line-clamp-3)
   useEffect(() => {
     const timer = setTimeout(() => {
       const element = textRef.current;
@@ -60,15 +59,15 @@ function ReviewItem({ review }: { review: TranslatedReview }) {
   }[language] || "Show less";
 
   return (
-    <div className="space-y-2 border-b border-ivory-200/40 dark:border-chocolate-800/20 pb-6 last:border-0 last:pb-0">
-      {/* Stars in Soft Sand color */}
+    <div className="space-y-2 border-b border-ivory-200/50 dark:border-chocolate-850/40 pb-5 last:border-0 last:pb-0">
+      {/* Rating Stars in Warm Sand/Copper */}
       <div className="flex space-x-1">
         {[...Array(Math.round(review.rating || 5))].map((_, i) => (
-          <span key={i} className="text-[#E6D5C3] dark:text-[#DFB283] text-sm">★</span>
+          <span key={i} className="text-[#C1682B] dark:text-[#DFB283] text-sm">★</span>
         ))}
       </div>
       
-      {/* Quote text flowing naturally */}
+      {/* Quote text */}
       <div className="relative">
         <p
           ref={textRef}
@@ -78,11 +77,6 @@ function ReviewItem({ review }: { review: TranslatedReview }) {
         >
           &ldquo;{reviewText}&rdquo;
         </p>
-        
-        {/* Subtle fade-out overlay when collapsed and truncated */}
-        {!isExpanded && isTruncated && (
-          <div className="absolute bottom-0 left-0 right-0 h-6 bg-gradient-to-t from-ivory-100/60 dark:from-[#1A1512]/80 to-transparent pointer-events-none" />
-        )}
       </div>
 
       {isTruncated && (
@@ -94,9 +88,9 @@ function ReviewItem({ review }: { review: TranslatedReview }) {
         </button>
       )}
 
-      {/* Guest Name & Time relative */}
-      <div className="flex items-center space-x-2 text-chocolate-700/60 dark:text-ivory-300/40 font-sans text-xs pt-1">
-        <span className="font-semibold text-chocolate-850 dark:text-ivory-100">— {review.author_name}</span>
+      {/* Guest Name & Time */}
+      <div className="flex items-center space-x-2 text-chocolate-700/70 dark:text-ivory-300/60 font-sans text-xs pt-1">
+        <span className="font-semibold text-chocolate-900 dark:text-ivory-100">— {review.author_name}</span>
         {reviewTime && (
           <>
             <span>&bull;</span>
@@ -111,90 +105,37 @@ function ReviewItem({ review }: { review: TranslatedReview }) {
 export default function AboutUs() {
   const { language, dict } = useLanguage();
 
-  // Realistic backup review texts in case of API failure
-  const reviewTexts = {
-    HR: {
-      r1: "Najbolja pizza na otoku Krku! Osoblje je iznimno uslužno, a ambijent na trgu je predivan.",
-      r2: "Izvrsna jela s roštilja i fantastična usluga. Preporučujem domaće burgere i ćevapčiće!",
-      r3: "Ugodna atmosfera, obilne porcije i vrlo pristupačne cijene. Svakako ćemo se vratiti opet!",
-      time1: "prije tjedan dana",
-      time2: "prije 2 tjedna",
-      time3: "prije mjesec dana"
-    },
-    EN: {
-      r1: "The best pizza on Krk island! The staff is very friendly, and the atmosphere on the main square is wonderful.",
-      r2: "Excellent grilled dishes and fantastic service. Highly recommend the homemade burgers and ćevapčići!",
-      r3: "Cozy atmosphere, generous portions, and very reasonable prices. We will definitely come back again!",
-      time1: "a week ago",
-      time2: "2 weeks ago",
-      time3: "a month ago"
-    },
-    IT: {
-      r1: "La migliore pizza dell'isola di Krk! Il personale è gentilissimo e l'atmosfera nella piazza principale è meravigliosa.",
-      r2: "Ottimi piatti alla griglia e servizio fantastico. Consiglio vivamente gli hamburger fatti in casa e i ćevapčići!",
-      r3: "Atmosfera accogliente, porzioni generose e prezzi molto ragionevoli. Ritorneremo sicuramente!",
-      time1: "una settimana fa",
-      time2: "2 settimane fa",
-      time3: "un mese fa"
-    },
-    DE: {
-      r1: "Die beste Pizza auf der Insel Krk! Das Personal ist sehr freundlich und die Atmosphäre auf dem Hauptplatz ist wunderschön.",
-      r2: "Hervorragende Grillgerichte und fantastischer Service. Ich empfehle die hausgemachten Burger und Ćevapčići!",
-      r3: "Gemütliche Atmosphäre, reichliche Portionen und sehr faire Preise. Wir kommen auf jeden Fall wieder!",
-      time1: "vor einer Woche",
-      time2: "vor 2 Wochen",
-      time3: "vor einem Monat"
-    }
-  };
-
-  // Localized backup reviews
   const backupReviews: TranslatedReview[] = [
-    { 
-      author_name: "Ana M.", 
-      rating: 5, 
+    {
+      author_name: "Ana H.",
+      rating: 5,
       text: {
-        hr: reviewTexts.HR.r1,
-        en: reviewTexts.EN.r1,
-        de: reviewTexts.DE.r1,
-        it: reviewTexts.IT.r1,
+        hr: "Najbolja pizza na otoku Krku! Osoblje je iznimno uslužno, a ambijent na terasi uz more je predivan.",
+        en: "The best pizza on Krk island! Extremely attentive staff and a wonderful seaside terrace ambiance.",
+        de: "Die beste Pizza auf der Insel Krk! Sehr aufmerksames Personal und eine wunderschöne Terrasse am Meer.",
+        it: "La migliore pizza sull'isola di Krk! Personale gentilissimo e splendida terrazza vista mare."
       },
       relative_time_description: {
-        hr: reviewTexts.HR.time1,
-        en: reviewTexts.EN.time1,
-        de: reviewTexts.DE.time1,
-        it: reviewTexts.IT.time1,
+        hr: "prije tjedan dana",
+        en: "a week ago",
+        de: "vor einer Woche",
+        it: "una settimana fa"
       }
     },
-    { 
-      author_name: "David K.", 
-      rating: 5, 
+    {
+      author_name: "Marko K.",
+      rating: 5,
       text: {
-        hr: reviewTexts.HR.r2,
-        en: reviewTexts.EN.r2,
-        de: reviewTexts.DE.r2,
-        it: reviewTexts.IT.r2,
+        hr: "Izvrsna jela s roštilja na ugljen i fantastična obiteljska usluga. Svaka preporuka!",
+        en: "Excellent charcoal grill dishes and fantastic family service. Highly recommended!",
+        de: "Hervorragende Holzkohlegrill-Gerichte und fantastischer Familienservice. Sehr zu empfehlen!",
+        it: "Eccellenti piatti alla griglia a carbone e fantastico servizio familiare. Consigliatissimo!"
       },
       relative_time_description: {
-        hr: reviewTexts.HR.time2,
-        en: reviewTexts.EN.time2,
-        de: reviewTexts.DE.time2,
-        it: reviewTexts.IT.time2,
-      }
-    },
-    { 
-      author_name: "Elena S.", 
-      rating: 5, 
-      text: {
-        hr: reviewTexts.HR.r3,
-        en: reviewTexts.EN.r3,
-        de: reviewTexts.DE.r3,
-        it: reviewTexts.IT.r3,
-      },
-      relative_time_description: {
-        hr: reviewTexts.HR.time3,
-        en: reviewTexts.EN.time3,
-        de: reviewTexts.DE.time3,
-        it: reviewTexts.IT.time3,
+        hr: "prije 2 tjedna",
+        en: "2 weeks ago",
+        de: "vor 2 Wochen",
+        it: "2 settimane fa"
       }
     }
   ];
@@ -212,170 +153,199 @@ export default function AboutUs() {
 
   const liveRating = rawReviewsData?.rating ?? null;
 
-  // Monitor active language changes and log them for diagnostics
-  useEffect(() => {
-    console.log(`[AboutUs] Active site language changed: ${language}`);
-  }, [language]);
-
-  const statsTranslations = {
+  const contentTranslations = {
     hr: {
-      experienceVal: "15+",
-      experienceLabel: "Godina iskustva",
-      freshVal: "100%",
-      freshLabel: "Svježi sastojci",
-      ratingLabel: "Google ocjena",
+      eyebrow: "ZIDARIĆI • MALINSKA • KRK",
+      heading: "Autentični okusi iz krušne peći i roštilja na ugljen",
+      paragraph: "Smještena u mirnom naselju Zidarići uz obalu Malinske na otoku Krku, Pizzeria Mandrać donosi vrhunska, svježe pripremljena jela. Naša obiteljska tradicija spaja hrskave pizze iz autentične krušne peći i sočna jela s roštilja na drveni ugljen u ugodnom i opuštenom mediteranskom ambijentu.",
+      highlights: [
+        "Krušna peć na drva",
+        "Sporo dizano tijesto",
+        "Žar drvenog ugljena",
+        "Terasa uz more"
+      ],
+      stats: [
+        { val: "15+", label: "Godina tradicije" },
+        { val: "100%", label: "Domaći sastojci" },
+        { val: liveRating !== null ? liveRating.toFixed(1) : "4.8", label: "Google ocjena" },
+      ]
     },
     en: {
-      experienceVal: "15+",
-      experienceLabel: "Years of Experience",
-      freshVal: "100%",
-      freshLabel: "Fresh Ingredients",
-      ratingLabel: "Google Rating",
+      eyebrow: "ZIDARIĆI • MALINSKA • KRK",
+      heading: "Authentic flavors from wood oven & charcoal grill",
+      paragraph: "Located in the serene seaside village of Zidarići near Malinska on Krk island, Pizzeria Mandrać offers freshly prepared dishes crafted with passion. Our family tradition combines crispy wood-fired pizzas and succulent charcoal grilled meats served in a warm Mediterranean seaside setting.",
+      highlights: [
+        "Wood-fired oven",
+        "Slow-fermented dough",
+        "Charcoal grill",
+        "Seaside terrace"
+      ],
+      stats: [
+        { val: "15+", label: "Years of Tradition" },
+        { val: "100%", label: "Fresh Ingredients" },
+        { val: liveRating !== null ? liveRating.toFixed(1) : "4.8", label: "Google Rating" },
+      ]
     },
     de: {
-      experienceVal: "15+",
-      experienceLabel: "Jahre Erfahrung",
-      freshVal: "100%",
-      freshLabel: "Frische Zutaten",
-      ratingLabel: "Google-Bewertung",
+      eyebrow: "ZIDARIĆI • MALINSKA • KRK",
+      heading: "Authentische Aromen aus Holzofen & Holzkohlegrill",
+      paragraph: "In dem ruhigen Ort Zidarići bei Malinska auf der Insel Krk bietet die Pizzeria Mandrać frisch zubereitete Speisen. Unsere Familientradition verbindet knusprige Holzofenpizzen und saftiges vom Holzkohlegrill in einer gemütlichen Atmosphäre am Meer.",
+      highlights: [
+        "Echter Holzofen",
+        "Langsam gereifter Teig",
+        "Echter Holzkohlegrill",
+        "Terrasse am Meer"
+      ],
+      stats: [
+        { val: "15+", label: "Jahre Tradition" },
+        { val: "100%", label: "Frische Zutaten" },
+        { val: liveRating !== null ? liveRating.toFixed(1) : "4.8", label: "Google-Bewertung" },
+      ]
     },
     it: {
-      experienceVal: "15+",
-      experienceLabel: "Anni di Esperienza",
-      freshVal: "100%",
-      freshLabel: "Ingredienti Freschi",
-      ratingLabel: "Valutazione Google",
-    },
+      eyebrow: "ZIDARIĆI • MALINSKA • KRK",
+      heading: "Autentici sapori dal forno a legna e griglia a carbone",
+      paragraph: "Situata a Zidarići vicino a Malinska sull'isola di Krk, la Pizzeria Mandrać offre piatti preparati al momento con passione. La nostra tradizione familiare unisce pizze croccanti dal forno a legna e succulente grigliate servite in un'atmosfera sul mare.",
+      highlights: [
+        "Forno a legna",
+        "Lunga lievitazione",
+        "Griglia a carbone",
+        "Terrazza sul mare"
+      ],
+      stats: [
+        { val: "15+", label: "Anni di Tradizione" },
+        { val: "100%", label: "Ingredienti Freschi" },
+        { val: liveRating !== null ? liveRating.toFixed(1) : "4.8", label: "Valutazione Google" },
+      ]
+    }
   };
-  const ratingValue = liveRating !== null ? liveRating.toFixed(1) : "4.8";
-  const googleScoreText = dict.about.google_score.replace("4.5+", ratingValue);
+
+  const currentContent = contentTranslations[language as keyof typeof contentTranslations] || contentTranslations.hr;
 
   return (
-    <section id="about" className="py-16 bg-ivory-100/50 dark:bg-[#1A1512]/60 border-y border-ivory-200/40 dark:border-chocolate-850/40 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 items-start">
+    <section
+      id="about"
+      className="py-20 sm:py-28 bg-ivory-50 dark:bg-chocolate-900 text-chocolate-900 dark:text-ivory-100 border-y border-ivory-200/60 dark:border-chocolate-850/50 transition-colors duration-300 relative overflow-hidden px-4 sm:px-6 lg:px-8"
+    >
+      {/* Subtle Background Glow Accent */}
+      <div className="absolute top-1/3 left-0 w-96 h-96 bg-[#C1682B]/10 dark:bg-[#C1682B]/15 blur-[140px] rounded-full pointer-events-none z-0" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        
+        {/* Asymmetric Editorial Grid (55 / 45 split) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Left Column: Our Content */}
+          {/* Left Column: One Large Atmospheric Photo (Bleeding / Large format) */}
           <motion.div
-            initial={{ opacity: 0, x: -25 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="space-y-6 sm:space-y-8"
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-5 relative"
           >
-            <div>
-              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
-                {dict.about.tagline}
-              </span>
-              <h2 className="font-serif text-3xl sm:text-5xl font-bold text-chocolate-900 dark:text-ivory-100 mt-3 mb-4">
-                {dict.about.title}
-              </h2>
-              <div className="h-0.5 w-16 bg-[#C1682B] dark:bg-[#DFB283] rounded" />
-            </div>
-
-            <p className="text-chocolate-850 dark:text-ivory-200 font-sans font-light text-sm sm:text-base leading-relaxed">
-              {dict.about.desc}
-            </p>
-
-            {/* Split Feature Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+            <div className="relative w-full h-[420px] sm:h-[520px] lg:h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-ivory-200 dark:border-chocolate-850/60 group">
+              <Image
+                src="/image/gallery/gallery-3.jpg"
+                alt="Pizzeria Mandrać seaside terrace in Zidarići"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+              />
+              {/* Subtle Gradient Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               
-              {/* Feature 1 */}
-              <div className="bg-white dark:bg-[#26201B] p-5 rounded-2xl border border-ivory-200 dark:border-chocolate-850/50 shadow-soft dark:shadow-none">
-                <h4 className="font-serif text-base font-semibold text-chocolate-900 dark:text-ivory-100 mb-2 uppercase flex items-center gap-2">
-                  <Flame className="h-5 w-5 text-[#8B5A2B] dark:text-[#DFB283] flex-shrink-0" />
-                  <span>{dict.about.feature1_title}</span>
-                </h4>
-                <p className="text-xs text-chocolate-700 dark:text-ivory-300 font-light leading-relaxed">
-                  {dict.about.feature1_desc}
+              {/* Photo Caption Label */}
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <span className="text-xs font-sans tracking-widest text-[#DFB283] uppercase font-semibold block mb-1">
+                  Zidarići • Malinska
+                </span>
+                <p className="font-serif text-sm sm:text-base font-medium opacity-90">
+                  Ugodan ambijent i ljetna terasa uz obalu
                 </p>
-              </div>
-
-              {/* Feature 2 */}
-              <div className="bg-white dark:bg-[#26201B] p-5 rounded-2xl border border-ivory-200 dark:border-chocolate-850/50 shadow-soft dark:shadow-none">
-                <h4 className="font-serif text-base font-semibold text-chocolate-900 dark:text-ivory-100 mb-2 uppercase flex items-center gap-2">
-                  <Pizza className="h-5 w-5 text-[#8B5A2B] dark:text-[#DFB283] flex-shrink-0" />
-                  <span>{dict.about.feature2_title}</span>
-                </h4>
-                <p className="text-xs text-chocolate-700 dark:text-ivory-300 font-light leading-relaxed">
-                  {dict.about.feature2_desc}
-                </p>
-              </div>
-
-            </div>
-
-            {/* Stats Row */}
-            <div className="mt-8 pt-8 border-t border-ivory-200/60 dark:border-chocolate-850/40 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-0 sm:divide-x sm:divide-ivory-200/60 dark:sm:divide-chocolate-850/40">
-              {/* Stat 1 */}
-              <div className="flex flex-col items-center text-center px-4 space-y-1">
-                <Calendar className="h-5 w-5 text-[#C1682B] dark:text-[#DFB283] mb-1" />
-                <span className="font-serif text-lg sm:text-xl font-bold text-chocolate-900 dark:text-ivory-100">
-                  {statsTranslations[language].experienceVal}
-                </span>
-                <span className="text-xs text-chocolate-700/80 dark:text-ivory-300/80 font-light font-sans">
-                  {statsTranslations[language].experienceLabel}
-                </span>
-              </div>
-              {/* Stat 2 */}
-              <div className="flex flex-col items-center text-center px-4 space-y-1">
-                <Leaf className="h-5 w-5 text-[#C1682B] dark:text-[#DFB283] mb-1" />
-                <span className="font-serif text-lg sm:text-xl font-bold text-chocolate-900 dark:text-ivory-100">
-                  {statsTranslations[language].freshVal}
-                </span>
-                <span className="text-xs text-chocolate-700/80 dark:text-ivory-300/80 font-light font-sans">
-                  {statsTranslations[language].freshLabel}
-                </span>
-              </div>
-              {/* Stat 3 */}
-              <div className="flex flex-col items-center text-center px-4 space-y-1">
-                <Star className="h-5 w-5 text-[#C1682B] dark:text-[#DFB283] mb-1" />
-                <span className="font-serif text-lg sm:text-xl font-bold text-chocolate-900 dark:text-ivory-100">
-                  {ratingValue}★
-                </span>
-                <span className="text-xs text-chocolate-700/80 dark:text-ivory-300/80 font-light font-sans">
-                  {statsTranslations[language].ratingLabel}
-                </span>
               </div>
             </div>
           </motion.div>
 
-          {/* Right Column: Google Places Reviews */}
+          {/* Right Column: Editorial Text & Highlights */}
           <motion.div
-            initial={{ opacity: 0, x: 25 }}
+            initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="space-y-6"
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+            className="lg:col-span-7 flex flex-col justify-center space-y-8"
           >
-            <div>
-              <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
-                {dict.about.reviews_tagline}
+            
+            {/* Eyebrow Label with Thin Accent Line */}
+            <div className="flex items-center space-x-3">
+              <span className="h-[1px] w-8 bg-[#C1682B]" />
+              <span className="text-xs sm:text-sm font-sans tracking-[0.25em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
+                {currentContent.eyebrow}
               </span>
-              <h3 className="font-serif text-2xl sm:text-3xl font-bold text-chocolate-900 dark:text-ivory-100 mt-3 mb-2">
-                {dict.about.reviews_title}
-              </h3>
-
-              {/* Google Badge Row */}
-              <div className="flex items-center space-x-2 text-chocolate-700/60 dark:text-ivory-300/60 pb-2">
-                <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
-                  <path d="M12.24 10.285V13.4h6.887C18.2 15.614 15.645 18 12.24 18c-3.86 0-7-3.14-7-7s3.14-7 7-7c1.7 0 3.3.65 4.5 1.8l2.4-2.4C17.34 1.7 14.9 1 12.24 1c-6.075 0-11 4.925-11 11s4.925 11 11 11c6.353 0 10.57-4.468 10.57-10.772 0-.726-.078-1.272-.23-1.943H12.24z" />
-                </svg>
-                <span className="font-sans text-xs tracking-wider uppercase font-semibold">
-                  {googleScoreText}
-                </span>
-              </div>
-              <div className="h-0.5 w-16 bg-[#C1682B] dark:bg-[#DFB283] rounded" />
             </div>
 
-            {/* Reviews List */}
-            <div className="space-y-6 pt-4">
-              {reviewsToRender.map((review, idx) => (
-                <ReviewItem key={`${idx}-${language}`} review={review} />
+            {/* Large Statement Heading */}
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-chocolate-900 dark:text-white leading-[1.18]">
+              {currentContent.heading}
+            </h2>
+
+            {/* Flowing Body Paragraph (No Blue Colors) */}
+            <p className="font-sans text-sm sm:text-base lg:text-lg leading-relaxed text-chocolate-850/90 dark:text-ivory-200/90 font-light max-w-2xl">
+              {currentContent.paragraph}
+            </p>
+
+            {/* Inline Selling Points (Subtle Dividers, No Boxes or Circular Icons) */}
+            <div className="pt-2 pb-2">
+              <div className="flex flex-wrap items-center gap-y-3 gap-x-4 sm:gap-x-6 text-xs sm:text-sm font-sans font-medium text-chocolate-900/90 dark:text-ivory-100/90 tracking-wide uppercase">
+                {currentContent.highlights.map((item, idx) => (
+                  <div key={idx} className="flex items-center space-x-4 sm:space-x-6">
+                    <span className="flex items-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#C1682B] dark:bg-[#DFB283] inline-block mr-2.5" />
+                      {item}
+                    </span>
+                    {idx < currentContent.highlights.length - 1 && (
+                      <span className="text-chocolate-300 dark:text-chocolate-700 hidden sm:inline">&bull;</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Understated Stat-like Highlights & Guest Rating */}
+            <div className="pt-6 border-t border-ivory-200 dark:border-chocolate-850/50 grid grid-cols-3 gap-4 sm:gap-8 max-w-xl">
+              {currentContent.stats.map((stat, idx) => (
+                <div key={idx} className="flex flex-col space-y-1">
+                  <span className="font-serif text-2xl sm:text-3xl font-bold text-[#C1682B] dark:text-[#DFB283]">
+                    {stat.val}{idx === 2 ? "★" : ""}
+                  </span>
+                  <span className="text-xs sm:text-sm text-chocolate-800 dark:text-ivory-300/80 font-sans font-light">
+                    {stat.label}
+                  </span>
+                </div>
               ))}
             </div>
+
+            {/* Integrated Google Reviews Highlight Snippet */}
+            {reviewsToRender.length > 0 && (
+              <div className="pt-6 border-t border-ivory-200 dark:border-chocolate-850/50">
+                <div className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold text-chocolate-700/80 dark:text-ivory-300/70 mb-4">
+                  <svg className="h-4 w-4 fill-current text-[#C1682B]" viewBox="0 0 24 24">
+                    <path d="M12.24 10.285V13.4h6.887C18.2 15.614 15.645 18 12.24 18c-3.86 0-7-3.14-7-7s3.14-7 7-7c1.7 0 3.3.65 4.5 1.8l2.4-2.4C17.34 1.7 14.9 1 12.24 1c-6.075 0-11 4.925-11 11s4.925 11 11 11c6.353 0 10.57-4.468 10.57-10.772 0-.726-.078-1.272-.23-1.943H12.24z" />
+                  </svg>
+                  <span>Google Reviews ({dict.about.google_score.replace("4.5+", liveRating !== null ? liveRating.toFixed(1) : "4.8")})</span>
+                </div>
+                <div className="space-y-4">
+                  {reviewsToRender.slice(0, 2).map((review, idx) => (
+                    <ReviewItem key={`${idx}-${language}`} review={review} />
+                  ))}
+                </div>
+              </div>
+            )}
+
           </motion.div>
 
         </div>
+
       </div>
     </section>
   );

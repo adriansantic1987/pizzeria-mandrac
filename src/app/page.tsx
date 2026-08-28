@@ -1,3 +1,4 @@
+import LoadingScreen from "@/components/LoadingScreen";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import AboutUs from "@/components/AboutUs";
@@ -11,6 +12,9 @@ import VacationModal from "@/components/VacationModal";
 export default function Home() {
   return (
     <>
+      {/* Initial Minimal Page Loading Screen */}
+      <LoadingScreen />
+
       {/* Automated Vacation Notice Overlay */}
       <VacationModal />
 

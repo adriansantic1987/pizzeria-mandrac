@@ -8,12 +8,19 @@ import MenuItem from "./MenuItem";
 import { useLanguage } from "@/context/LanguageContext";
 import useSWR from "swr";
 
+// Category Banner Images:
+// "pizze" and "rostilj" use local real photos (/image/pizza.jpg & /image/rostilj.jpg).
+// "predjela", "deserti", and "salate" use temporary Unsplash food placeholders
+// and should be replaced with real restaurant photos in /public/image/ later.
 const CATEGORY_BANNERS: Record<string, string> = {
   pizze: "/image/pizza.jpg",
   rostilj: "/image/rostilj.jpg",
-  predjela: "/image/gallery/gallery-1.jpg",
-  deserti: "/image/deserti.jpg",
-  salate: "/image/gallery/gallery-2.jpg",
+  // Temporary Placeholder: Charcuterie & Cheese Appetizers Platter
+  predjela: "https://images.unsplash.com/photo-1541532713592-79a0317b6b77?auto=format&fit=crop&w=1200&q=85",
+  // Temporary Placeholder: Dessert / Tiramisu
+  deserti: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1200&q=85",
+  // Temporary Placeholder: Fresh Mediterranean Salad
+  salate: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=85",
 };
 
 export default function MenuSection() {

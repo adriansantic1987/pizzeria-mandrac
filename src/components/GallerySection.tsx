@@ -57,6 +57,20 @@ export default function GallerySection() {
   const handleScroll = () => {
     if (!scrollRef.current) return;
     const container = scrollRef.current;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+
+    // If scrolled at or near the end of the container, activate the last slide
+    if (maxScroll > 0 && container.scrollLeft >= maxScroll - 25) {
+      setActiveIndex(galleryImages.length - 1);
+      return;
+    }
+
+    // If scrolled at or near the start, activate the first slide
+    if (container.scrollLeft <= 25) {
+      setActiveIndex(0);
+      return;
+    }
+
     const cards = container.querySelectorAll<HTMLElement>(".gallery-card");
     if (!cards.length) return;
 
@@ -80,11 +94,25 @@ export default function GallerySection() {
     if (!scrollRef.current) return;
     const container = scrollRef.current;
     const cards = container.querySelectorAll<HTMLElement>(".gallery-card");
+
+    if (index === 0) {
+      container.scrollTo({ left: 0, behavior: "smooth" });
+      setActiveIndex(0);
+      return;
+    }
+
+    if (index === galleryImages.length - 1) {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      container.scrollTo({ left: maxScroll, behavior: "smooth" });
+      setActiveIndex(galleryImages.length - 1);
+      return;
+    }
+
     if (cards[index]) {
       const card = cards[index];
       const scrollTarget = card.offsetLeft - (container.clientWidth - card.offsetWidth) / 2;
       container.scrollTo({
-        left: Math.max(0, scrollTarget),
+        left: Math.max(0, Math.min(scrollTarget, container.scrollWidth - container.clientWidth)),
         behavior: "smooth",
       });
       setActiveIndex(index);

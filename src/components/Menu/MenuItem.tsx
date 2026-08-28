@@ -19,22 +19,27 @@ export default function MenuItem({ item }: MenuItemProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.2 }}
-      className="flex items-baseline justify-between py-4 border-b border-dotted border-ivory-300 dark:border-chocolate-800/30"
+      className="group relative flex flex-col justify-between p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#231D18] border border-[#EAE3D6] dark:border-[#33271F] shadow-[0_2px_12px_rgba(40,25,15,0.03)] hover:shadow-[0_6px_20px_rgba(40,25,15,0.07)] hover:border-[#D8CEBF] dark:hover:border-[#47372B] hover:-translate-y-0.5 transition-all duration-200"
     >
-      {/* Left Details: Title & Ingredients */}
-      <div className="pr-6 flex-1">
-        <h4 className="font-serif text-base sm:text-lg font-bold text-chocolate-900 dark:text-ivory-100">
+      {/* Top Row: Name, Leader Dots & Price */}
+      <div className="flex items-baseline justify-between gap-3">
+        <h4 className="font-serif text-base sm:text-lg font-semibold text-[#1C140F] dark:text-[#FAF7F2] tracking-tight group-hover:text-[#B86E2B] dark:group-hover:text-[#E8A555] transition-colors">
           {name}
         </h4>
-        <p className="text-xs sm:text-sm text-chocolate-700 dark:text-ivory-300 font-light italic mt-1 font-sans">
-          {description}
-        </p>
+        
+        {/* Price Badge */}
+        <div className="flex-shrink-0 font-sans font-bold text-sm sm:text-base text-[#B86E2B] dark:text-[#E8A555] bg-[#FAF7F2] dark:bg-[#2D231C] px-3 py-1 rounded-full border border-[#EAE3D6] dark:border-[#3D2E24]">
+          {(typeof item.price === "number" ? item.price : parseFloat(item.price) || 0).toFixed(2)} €
+        </div>
       </div>
 
-      {/* Right Price */}
-      <div className="font-sans font-bold text-base sm:text-lg text-chocolate-900 dark:text-ivory-100 whitespace-nowrap pl-4">
-        {(typeof item.price === "number" ? item.price : parseFloat(item.price) || 0).toFixed(2)} €
-      </div>
+      {/* Description / Ingredients */}
+      {description && (
+        <p className="text-xs sm:text-[13px] text-[#6B5749] dark:text-[#CCC1B5] font-sans font-normal leading-relaxed mt-2 pr-2">
+          {description}
+        </p>
+      )}
     </motion.div>
   );
 }
+

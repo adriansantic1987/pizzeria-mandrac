@@ -92,11 +92,6 @@ interface LanguageContextProps {
 
 const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
 
-const DEFAULT_SWR_FALLBACK = {
-  siteContent: [],
-  settings: { vacation_start: null, vacation_end: null }
-};
-
 export function LanguageProvider({
   children,
   initialSiteContent,
@@ -119,9 +114,7 @@ export function LanguageProvider({
   });
 
   // Fetch site content dynamically via SWR to silently update translations and settings in background
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-  const { data: liveData } = useSWR("/api/site_content", fetcher, {
-    fallbackData: DEFAULT_SWR_FALLBACK,
+  const { data: liveData } = useSWR("/api/site_content", (url: string) => fetch(url).then((res) => res.json()), {
     revalidateOnFocus: false
   });
 
@@ -171,7 +164,12 @@ export function LanguageProvider({
       });
     }
 
-    setDict(baseDict as TranslationDictionary);
+    setDict((prev) => {
+      if (JSON.stringify(prev) === JSON.stringify(baseDict)) {
+        return prev;
+      }
+      return baseDict as TranslationDictionary;
+    });
   }, [language, liveData, initialSiteContent]);
 
   const translateMenuItem = (item: { id: string; name: string; description: string }) => {

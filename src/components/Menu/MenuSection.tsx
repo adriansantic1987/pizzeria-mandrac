@@ -11,9 +11,9 @@ import useSWR from "swr";
 const CATEGORY_BANNERS: Record<string, string> = {
   pizze: "/image/pizza.jpg",
   rostilj: "/image/rostilj.jpg",
-  predjela: "/image/pizza.jpg",
-  deserti: "/image/pizza.jpg",
-  salate: "/image/pizza.jpg",
+  predjela: "/image/gallery/gallery-1.jpg",
+  deserti: "/image/deserti.jpg",
+  salate: "/image/gallery/gallery-2.jpg",
 };
 
 export default function MenuSection() {
@@ -41,26 +41,26 @@ export default function MenuSection() {
   );
 
   return (
-    <section id="menu" className="py-24 bg-ivory-50 dark:bg-[#1A1512] px-4 sm:px-6 lg:px-8 border-t border-ivory-200/50 dark:border-chocolate-850/40">
+    <section id="menu" className="py-24 sm:py-32 bg-[#FAF7F2] dark:bg-[#16120E] px-4 sm:px-6 lg:px-8 border-t border-[#EAE3D6] dark:border-[#28211B] scroll-mt-24">
       <div className="max-w-7xl mx-auto">
         
         {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs sm:text-sm font-sans tracking-[0.2em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-14">
+          <span className="text-xs sm:text-sm font-sans tracking-[0.22em] text-[#B86E2B] dark:text-[#E2984D] uppercase font-semibold">
             {dict.menu.tagline}
           </span>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-chocolate-900 dark:text-ivory-100 mt-3 mb-4 font-black">
+          <h2 className="font-serif text-3xl sm:text-5xl font-normal text-[#1C140F] dark:text-[#FAF7F2] mt-3 mb-4 tracking-tight">
             {dict.menu.title}
           </h2>
-          <div className="h-0.5 w-16 bg-[#C1682B] dark:bg-[#DFB283] mx-auto rounded mb-4" />
-          <p className="text-chocolate-850 dark:text-ivory-200 font-sans font-light text-sm sm:text-base leading-relaxed">
+          <div className="h-0.5 w-14 bg-[#B86E2B] dark:bg-[#E2984D] mx-auto rounded mb-4" />
+          <p className="text-[#6B5749] dark:text-[#CCC1B5] font-sans font-light text-sm sm:text-base leading-relaxed">
             {dict.menu.subtitle}
           </p>
         </div>
 
         {/* Categories Tab Bar (Mobile Horizontally Scrollable) */}
-        <div className="flex justify-center mb-12">
-          <div className="flex space-x-2 overflow-x-auto pb-3 sm:pb-0 scrollbar-none w-full max-w-5xl justify-start sm:justify-center px-2 flex-nowrap">
+        <div className="flex justify-center mb-10 sm:mb-12">
+          <div className="flex space-x-2 sm:space-x-3 overflow-x-auto pb-3 sm:pb-0 scrollbar-none w-full max-w-5xl justify-start sm:justify-center px-2 flex-nowrap">
             {CATEGORIES.map((cat) => {
               const isActive = cat.id === activeCategory;
               const displayName = dict.menu.categories[cat.id as keyof typeof dict.menu.categories] || cat.name;
@@ -69,8 +69,8 @@ export default function MenuSection() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`relative flex-shrink-0 px-6 py-3.5 rounded-full text-xs sm:text-sm font-sans font-semibold tracking-wide uppercase transition-all duration-300 focus:outline-none cursor-pointer ${
-                    isActive ? "text-white" : "text-chocolate-800 dark:text-ivory-200 hover:text-chocolate-900 dark:hover:text-white hover:bg-ivory-100 dark:hover:bg-[#26201B]"
+                  className={`relative flex-shrink-0 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-sans font-semibold tracking-wide uppercase transition-all duration-300 focus:outline-none cursor-pointer ${
+                    isActive ? "text-white" : "text-[#5A493D] dark:text-[#CCC1B5] hover:text-[#1C140F] dark:hover:text-white hover:bg-white/80 dark:hover:bg-[#231D18]"
                   }`}
                 >
                   {/* Sliding Background Highlight */}
@@ -78,7 +78,7 @@ export default function MenuSection() {
                     <motion.div
                       layoutId="activeCategoryBg"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      className="absolute inset-0 bg-[#C1682B] rounded-full z-0"
+                      className="absolute inset-0 bg-[#B86E2B] rounded-full z-0 shadow-sm"
                     />
                   )}
                   <span className="relative z-10">{displayName}</span>
@@ -89,7 +89,7 @@ export default function MenuSection() {
         </div>
 
         {/* Dynamic Category Atmosphere Banner */}
-        <div className="relative w-full h-[200px] sm:h-[300px] md:h-[350px] mb-12 sm:mb-16 overflow-hidden rounded-2xl border border-ivory-200/50 dark:border-chocolate-850/40 shadow-soft dark:shadow-none bg-ivory-100 dark:bg-[#26201B]">
+        <div className="relative w-full h-[180px] sm:h-[260px] md:h-[300px] mb-10 sm:mb-12 overflow-hidden rounded-3xl border border-[#EAE3D6] dark:border-[#2C231D] shadow-md bg-[#EFEAE0] dark:bg-[#231D18]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCategory}
@@ -105,16 +105,16 @@ export default function MenuSection() {
                 fill
                 priority
                 sizes="100vw"
-                className="object-cover object-center scale-102"
+                className="object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-chocolate-900/70 via-chocolate-900/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
               
               {/* Overlay Title */}
-              <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 text-left">
-                <h3 className="font-serif text-2xl sm:text-4xl font-bold text-white uppercase tracking-wider">
+              <div className="absolute bottom-5 left-6 sm:bottom-7 sm:left-8 text-left">
+                <h3 className="font-serif text-2xl sm:text-4xl font-normal text-white uppercase tracking-wider">
                   {dict.menu.categories[activeCategory as keyof typeof dict.menu.categories] || activeCategory}
                 </h3>
-                <p className="text-chocolate-50/80 font-sans text-xs sm:text-sm mt-1 sm:mt-2 font-light">
+                <p className="text-white/85 font-sans text-xs sm:text-sm mt-1 sm:mt-1.5 font-light">
                   {dict.menu.banner_subtitle}
                 </p>
               </div>
@@ -122,20 +122,22 @@ export default function MenuSection() {
           </AnimatePresence>
         </div>
 
-        {/* Text-Based Menu Rows split into two columns */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2 transition-all duration-300 ease-out transform ${
-          isAnimating ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
-        }`}>
-          <AnimatePresence mode="popLayout">
-            {filteredItems.map((item) => (
-              <MenuItem key={item.id} item={item} />
-            ))}
-          </AnimatePresence>
+        {/* Menu Cards Grid split into two columns with parchment backing */}
+        <div className="bg-[#FAF8F5]/80 dark:bg-[#1B1511]/80 backdrop-blur-sm rounded-3xl p-5 sm:p-8 lg:p-10 border border-[#EAE3D6]/90 dark:border-[#2C231D] shadow-sm">
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 transition-all duration-300 ease-out transform ${
+            isAnimating ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
+          }`}>
+            <AnimatePresence mode="popLayout">
+              {filteredItems.map((item) => (
+                <MenuItem key={item.id} item={item} />
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Dietary Note */}
-        <div className="mt-16 text-center">
-          <p className="text-xs sm:text-sm text-chocolate-700/60 dark:text-ivory-300/40 font-sans">
+        <div className="mt-12 text-center">
+          <p className="text-xs sm:text-sm text-[#786455] dark:text-[#A89A8E] font-sans font-light">
             {dict.menu.allergy_note}
           </p>
         </div>

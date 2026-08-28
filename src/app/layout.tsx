@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Outfit } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans, Cormorant_Garamond, Alex_Brush } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -7,15 +7,31 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { getBistroData } from "@/utils/cache";
 
 const playfair = Playfair_Display({
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
   variable: "--font-serif",
   display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
-const outfit = Outfit({
-  subsets: ["latin"],
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin", "latin-ext"],
   variable: "--font-sans",
   display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-cormorant",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const alexBrush = Alex_Brush({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-script",
+  display: "swap",
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -74,7 +90,7 @@ export default async function RootLayout({
   return (
     <html
       lang="hr"
-      className={`${playfair.variable} ${outfit.variable} h-full scroll-smooth antialiased`}
+      className={`${playfair.variable} ${plusJakarta.variable} ${cormorant.variable} ${alexBrush.variable} h-full scroll-smooth antialiased`}
       suppressHydrationWarning
     >
       <head>

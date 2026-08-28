@@ -1,352 +1,409 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ArrowUpRight, MapPin } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import useSWR from "swr";
-
-interface TranslatedReview {
-  author_name: string;
-  rating: number;
-  text: {
-    hr: string;
-    en: string;
-    de: string;
-    it: string;
-  };
-  relative_time_description: {
-    hr: string;
-    en: string;
-    de: string;
-    it: string;
-  };
-}
-
-function ReviewItem({ review }: { review: TranslatedReview }) {
-  const { language } = useLanguage();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isTruncated, setIsTruncated] = useState(false);
-  const textRef = useRef<HTMLParagraphElement>(null);
-
-  const langKey = language.toLowerCase() as "hr" | "en" | "de" | "it";
-  const reviewText = review.text[langKey] || review.text.hr;
-  const reviewTime = review.relative_time_description[langKey] || review.relative_time_description.hr;
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const element = textRef.current;
-      if (element) {
-        setIsTruncated(element.scrollHeight > element.clientHeight);
-      }
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, [reviewText]);
-
-  const readMoreText = {
-    hr: "Pročitaj više",
-    en: "Read more",
-    de: "Mehr lesen",
-    it: "Leggi di più",
-  }[language] || "Read more";
-
-  const showLessText = {
-    hr: "Prikaži manje",
-    en: "Show less",
-    de: "Weniger anzeigen",
-    it: "Mostra meno",
-  }[language] || "Show less";
-
-  return (
-    <div className="space-y-2 border-b border-ivory-200/50 dark:border-chocolate-850/40 pb-5 last:border-0 last:pb-0">
-      {/* Rating Stars in Warm Sand/Copper */}
-      <div className="flex space-x-1">
-        {[...Array(Math.round(review.rating || 5))].map((_, i) => (
-          <span key={i} className="text-[#C1682B] dark:text-[#DFB283] text-sm">★</span>
-        ))}
-      </div>
-      
-      {/* Quote text */}
-      <div className="relative">
-        <p
-          ref={textRef}
-          className={`text-chocolate-850 dark:text-ivory-200 font-serif italic text-sm sm:text-base leading-relaxed transition-all duration-300 ease-in-out ${
-            isExpanded ? "" : "line-clamp-3"
-          }`}
-        >
-          &ldquo;{reviewText}&rdquo;
-        </p>
-      </div>
-
-      {isTruncated && (
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-[#C1682B] hover:text-[#A9551E] dark:text-[#DFB283] dark:hover:text-white font-sans text-xs font-semibold uppercase tracking-wider focus:outline-none mt-1 transition-colors duration-200 cursor-pointer"
-        >
-          {isExpanded ? showLessText : readMoreText}
-        </button>
-      )}
-
-      {/* Guest Name & Time */}
-      <div className="flex items-center space-x-2 text-chocolate-700/70 dark:text-ivory-300/60 font-sans text-xs pt-1">
-        <span className="font-semibold text-chocolate-900 dark:text-ivory-100">— {review.author_name}</span>
-        {reviewTime && (
-          <>
-            <span>&bull;</span>
-            <span>{reviewTime}</span>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
 
 export default function AboutUs() {
-  const { language, dict } = useLanguage();
+  const { language } = useLanguage();
 
-  const backupReviews: TranslatedReview[] = [
-    {
-      author_name: "Ana H.",
-      rating: 5,
-      text: {
-        hr: "Najbolja pizza na otoku Krku! Osoblje je iznimno uslužno, a ambijent na terasi uz more je predivan.",
-        en: "The best pizza on Krk island! Extremely attentive staff and a wonderful seaside terrace ambiance.",
-        de: "Die beste Pizza auf der Insel Krk! Sehr aufmerksames Personal und eine wunderschöne Terrasse am Meer.",
-        it: "La migliore pizza sull'isola di Krk! Personale gentilissimo e splendida terrazza vista mare."
-      },
-      relative_time_description: {
-        hr: "prije tjedan dana",
-        en: "a week ago",
-        de: "vor einer Woche",
-        it: "una settimana fa"
-      }
-    },
-    {
-      author_name: "Marko K.",
-      rating: 5,
-      text: {
-        hr: "Izvrsna jela s roštilja na ugljen i fantastična obiteljska usluga. Svaka preporuka!",
-        en: "Excellent charcoal grill dishes and fantastic family service. Highly recommended!",
-        de: "Hervorragende Holzkohlegrill-Gerichte und fantastischer Familienservice. Sehr zu empfehlen!",
-        it: "Eccellenti piatti alla griglia a carbone e fantastico servizio familiare. Consigliatissimo!"
-      },
-      relative_time_description: {
-        hr: "prije 2 tjedna",
-        en: "2 weeks ago",
-        de: "vor 2 Wochen",
-        it: "2 settimane fa"
-      }
-    }
-  ];
-
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-  const { data: rawReviewsData } = useSWR("/api/reviews", fetcher, {
-    fallbackData: { rating: 4.8, reviews: backupReviews },
-    revalidateOnFocus: false
-  });
-
-  const reviewsToRender = rawReviewsData?.reviews && Array.isArray(rawReviewsData.reviews) && rawReviewsData.reviews.length > 0
-    ? (rawReviewsData.reviews as TranslatedReview[])
-    : backupReviews;
-
-  const liveRating = rawReviewsData?.rating ?? null;
-
-  const contentTranslations = {
+  const content = {
     hr: {
-      eyebrow: "ZIDARIĆI • MALINSKA • KRK",
-      heading: "Autentični okusi iz krušne peći i roštilja na ugljen",
-      paragraph: "Smještena u mirnom naselju Zidarići uz obalu Malinske na otoku Krku, Pizzeria Mandrać donosi vrhunska, svježe pripremljena jela. Naša obiteljska tradicija spaja hrskave pizze iz autentične krušne peći i sočna jela s roštilja na drveni ugljen u ugodnom i opuštenom mediteranskom ambijentu.",
-      highlights: [
-        "Krušna peć na drva",
-        "Sporo dizano tijesto",
-        "Žar drvenog ugljena",
-        "Terasa uz more"
-      ],
-      stats: [
-        { val: "15+", label: "Godina tradicije" },
-        { val: "100%", label: "Domaći sastojci" },
-        { val: liveRating !== null ? liveRating.toFixed(1) : "4.8", label: "Google ocjena" },
-      ]
+      eyebrow: "DOBRODOŠLI U PIZZERIJU & GRILL MANDRAĆ",
+      titleLine1: "DOĐITE I UPOZNAJTE",
+      scriptWord: "nas",
+      titleLine2: "U MANDRAĆU",
+      p1: "Ugniježđena u mirnoj uvali Zidarići uz samu obalu Malinske na otoku Krku, Pizzeria Mandrać stvorena je iz jednostavne želje – ponuditi domaćim gostima i putnicima iskrenu hranu pripremljenu s pažnjom i bez kompromisa.",
+      p2: "Naše tijesto prolazi sporu, prirodnu fermentaciju kako bi kora bila lagana, prozračna i hrskava, pečena u tradicionalnoj krušnoj peći na drva. Sa žara drvenog ugljena stižu sočni burgeri i mesni specijaliteti – savršeni za ljetna druženja uz miris mora i borova.",
+      ctaText: "ISTRAŽITE NAŠ JELOVNIK",
+      mapText: "NAĐITE NAS NA MAPI",
+      tagline1: "Krušna peć na bukovo drvo",
+      tagline2: "Žar prirodnog drvenog ugljena",
+      locationBadge: "Zidarići, Malinska • Krk",
     },
     en: {
-      eyebrow: "ZIDARIĆI • MALINSKA • KRK",
-      heading: "Authentic flavors from wood oven & charcoal grill",
-      paragraph: "Located in the serene seaside village of Zidarići near Malinska on Krk island, Pizzeria Mandrać offers freshly prepared dishes crafted with passion. Our family tradition combines crispy wood-fired pizzas and succulent charcoal grilled meats served in a warm Mediterranean seaside setting.",
-      highlights: [
-        "Wood-fired oven",
-        "Slow-fermented dough",
-        "Charcoal grill",
-        "Seaside terrace"
-      ],
-      stats: [
-        { val: "15+", label: "Years of Tradition" },
-        { val: "100%", label: "Fresh Ingredients" },
-        { val: liveRating !== null ? liveRating.toFixed(1) : "4.8", label: "Google Rating" },
-      ]
-    },
-    de: {
-      eyebrow: "ZIDARIĆI • MALINSKA • KRK",
-      heading: "Authentische Aromen aus Holzofen & Holzkohlegrill",
-      paragraph: "In dem ruhigen Ort Zidarići bei Malinska auf der Insel Krk bietet die Pizzeria Mandrać frisch zubereitete Speisen. Unsere Familientradition verbindet knusprige Holzofenpizzen und saftiges vom Holzkohlegrill in einer gemütlichen Atmosphäre am Meer.",
-      highlights: [
-        "Echter Holzofen",
-        "Langsam gereifter Teig",
-        "Echter Holzkohlegrill",
-        "Terrasse am Meer"
-      ],
-      stats: [
-        { val: "15+", label: "Jahre Tradition" },
-        { val: "100%", label: "Frische Zutaten" },
-        { val: liveRating !== null ? liveRating.toFixed(1) : "4.8", label: "Google-Bewertung" },
-      ]
+      eyebrow: "WELCOME TO PIZZERIA & GRILL MANDRAĆ",
+      titleLine1: "COME & MEET",
+      scriptWord: "us",
+      titleLine2: "AT MANDRAĆ",
+      p1: "Tucked away in the tranquil bay of Zidarići on the shores of Malinska, Krk Island, Pizzeria Mandrać was born from a simple desire: to serve genuine, honest Mediterranean food prepared with passion and the finest ingredients.",
+      p2: "Our dough undergoes slow, natural fermentation resulting in a light, airy, and delicately crisp crust baked inside an authentic beechwood-fired oven. Alongside our pizzas, our natural charcoal grill turns out succulent gourmet burgers and sizzling meats in a relaxed seaside setting.",
+      ctaText: "DISCOVER OUR MENU",
+      mapText: "FIND US ON MAP",
+      tagline1: "Authentic Beechwood Oven",
+      tagline2: "Natural Charcoal Grill",
+      locationBadge: "Zidarići, Malinska • Krk",
     },
     it: {
-      eyebrow: "ZIDARIĆI • MALINSKA • KRK",
-      heading: "Autentici sapori dal forno a legna e griglia a carbone",
-      paragraph: "Situata a Zidarići vicino a Malinska sull'isola di Krk, la Pizzeria Mandrać offre piatti preparati al momento con passione. La nostra tradizione familiare unisce pizze croccanti dal forno a legna e succulente grigliate servite in un'atmosfera sul mare.",
-      highlights: [
-        "Forno a legna",
-        "Lunga lievitazione",
-        "Griglia a carbone",
-        "Terrazza sul mare"
-      ],
-      stats: [
-        { val: "15+", label: "Anni di Tradizione" },
-        { val: "100%", label: "Ingredienti Freschi" },
-        { val: liveRating !== null ? liveRating.toFixed(1) : "4.8", label: "Valutazione Google" },
-      ]
-    }
+      eyebrow: "BENVENUTI ALLA PIZZERIA & GRILL MANDRAĆ",
+      titleLine1: "VENITE A CONOSCER",
+      scriptWord: "ci",
+      titleLine2: "DA MANDRAĆ",
+      p1: "Immersa nella quiete della baia di Zidarići, sulle rive di Malinska nell'isola di Krk, la Pizzeria Mandrać nasce dal desiderio di offrire sapori autentici e materie prime scelte con cura in un'atmosfera calda e accogliente.",
+      p2: "Il nostro impasto segue una lenta lievitazione naturale per garantire massima leggerezza e fragranza, cotto nel classico forno a legna. Sulla brace a carbone naturale prepariamo carni selezionate e hamburger artigianali, accompagnati dalla brezza del mare.",
+      ctaText: "SCOPRI IL NOSTRO MENU",
+      mapText: "TROVACI SULLA MAPPA",
+      tagline1: "Forno a legna di faggio",
+      tagline2: "Brace a carbone naturale",
+      locationBadge: "Zidarići, Malinska • Krk",
+    },
+    de: {
+      eyebrow: "WILLKOMMEN IN DER PIZZERIA & GRILL MANDRAĆ",
+      titleLine1: "BESUCHEN SIE",
+      scriptWord: "uns",
+      titleLine2: "BEI MANDRAĆ",
+      p1: "Eingebettet in die idyllische Bucht von Zidarići an der Küste von Malinska auf der Insel Krk entstand die Pizzeria Mandrać aus der Leidenschaft für ehrliche, mediterrane Küche und unvergessliche Urlaubsmomente.",
+      p2: "Unser Pizzateig reift durch schonende, lange Teigführung und wird im traditionellen Buchenholzofen knusprig gebacken. Vom offenen Holzkohlegrill servieren wir saftige Burger und Fleischspezialitäten – ideal für laue Sommerabende unter Pinien.",
+      ctaText: "SPEISEKARTE ENTDECKEN",
+      mapText: "AUF DER KARTE FINDEN",
+      tagline1: "Traditioneller Holzofen",
+      tagline2: "Echter Holzkohlegrill",
+      locationBadge: "Zidarići, Malinska • Krk",
+    },
+  }[language] || {
+    eyebrow: "DOBRODOŠLI U PIZZERIJU & GRILL MANDRAĆ",
+    titleLine1: "DOĐITE I UPOZNAJTE",
+    scriptWord: "nas",
+    titleLine2: "U MANDRAĆU",
+    p1: "Ugniježđena u mirnoj uvali Zidarići uz samu obalu Malinske na otoku Krku, Pizzeria Mandrać stvorena je iz jednostavne želje – ponuditi domaćim gostima i putnicima iskrenu hranu pripremljenu s pažnjom i bez kompromisa.",
+    p2: "Naše tijesto prolazi sporu, prirodnu fermentaciju kako bi kora bila lagana, prozračna i hrskava, pečena u tradicionalnoj krušnoj peći na drva. Sa žara drvenog ugljena stižu sočni burgeri i mesni specijaliteti – savršeni za ljetna druženja uz miris mora i borova.",
+    ctaText: "ISTRAŽITE NAŠ JELOVNIK",
+    mapText: "NAĐITE NAS NA MAPI",
+    tagline1: "Krušna peć na bukovo drvo",
+    tagline2: "Žar prirodnog drvenog ugljena",
+    locationBadge: "Zidarići, Malinska • Krk",
   };
-
-  const currentContent = contentTranslations[language as keyof typeof contentTranslations] || contentTranslations.hr;
 
   return (
     <section
       id="about"
-      className="py-20 sm:py-28 bg-ivory-50 dark:bg-chocolate-900 text-chocolate-900 dark:text-ivory-100 border-y border-ivory-200/60 dark:border-chocolate-850/50 transition-colors duration-300 relative overflow-hidden px-4 sm:px-6 lg:px-8"
+      className="relative overflow-hidden bg-[#FAF7F2] dark:bg-[#151210] text-[#32231A] dark:text-[#EFE9DF] transition-colors duration-300 py-20 sm:py-28 lg:py-36 border-b border-[#EAE3D6] dark:border-[#28211B]"
     >
-      {/* Subtle Background Glow Accent */}
-      <div className="absolute top-1/3 left-0 w-96 h-96 bg-[#C1682B]/10 dark:bg-[#C1682B]/15 blur-[140px] rounded-full pointer-events-none z-0" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        
-        {/* Asymmetric Editorial Grid (55 / 45 split) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 xl:gap-16 2xl:gap-20 items-center">
           
-          {/* Left Column: One Large Atmospheric Photo (Bleeding / Large format) */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-5 relative"
-          >
-            <div className="relative w-full h-[420px] sm:h-[520px] lg:h-[580px] rounded-3xl overflow-hidden shadow-2xl border border-ivory-200 dark:border-chocolate-850/60 group">
-              <Image
-                src="/image/gallery/gallery-3.jpg"
-                alt="Pizzeria Mandrać seaside terrace in Zidarići"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
-              {/* Subtle Gradient Vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              
-              {/* Photo Caption Label */}
-              <div className="absolute bottom-6 left-6 right-6 text-white">
-                <span className="text-xs font-sans tracking-widest text-[#DFB283] uppercase font-semibold block mb-1">
-                  Zidarići • Malinska
-                </span>
-                <p className="font-serif text-sm sm:text-base font-medium opacity-90">
-                  Ugodan ambijent i ljetna terasa uz obalu
-                </p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right Column: Editorial Text & Highlights */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, delay: 0.15 }}
-            className="lg:col-span-7 flex flex-col justify-center space-y-8"
-          >
+          {/* LEFT COLUMN: Editorial Typography, Overlapping Script Headline & Narrative */}
+          <div className="lg:col-span-6 xl:col-span-6 z-10 space-y-6 sm:space-y-8 pr-0 lg:pr-2 xl:pr-6">
             
-            {/* Eyebrow Label with Thin Accent Line */}
-            <div className="flex items-center space-x-3">
-              <span className="h-[1px] w-8 bg-[#C1682B]" />
-              <span className="text-xs sm:text-sm font-sans tracking-[0.25em] text-[#C1682B] dark:text-[#DFB283] uppercase font-semibold">
-                {currentContent.eyebrow}
+            {/* Small uppercase gold eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center gap-2.5"
+            >
+              <span className="text-[11px] sm:text-xs font-sans font-semibold tracking-[0.24em] text-[#B86E2B] dark:text-[#E2984D] uppercase">
+                {content.eyebrow}
               </span>
-            </div>
+            </motion.div>
 
-            {/* Large Statement Heading */}
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-chocolate-900 dark:text-white leading-[1.18]">
-              {currentContent.heading}
-            </h2>
-
-            {/* Flowing Body Paragraph (No Blue Colors) */}
-            <p className="font-sans text-sm sm:text-base lg:text-lg leading-relaxed text-chocolate-850/90 dark:text-ivory-200/90 font-light max-w-2xl">
-              {currentContent.paragraph}
-            </p>
-
-            {/* Inline Selling Points (Subtle Dividers, No Boxes or Circular Icons) */}
-            <div className="pt-2 pb-2">
-              <div className="flex flex-wrap items-center gap-y-3 gap-x-4 sm:gap-x-6 text-xs sm:text-sm font-sans font-medium text-chocolate-900/90 dark:text-ivory-100/90 tracking-wide uppercase">
-                {currentContent.highlights.map((item, idx) => (
-                  <div key={idx} className="flex items-center space-x-4 sm:space-x-6">
-                    <span className="flex items-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#C1682B] dark:bg-[#DFB283] inline-block mr-2.5" />
-                      {item}
-                    </span>
-                    {idx < currentContent.highlights.length - 1 && (
-                      <span className="text-chocolate-300 dark:text-chocolate-700 hidden sm:inline">&bull;</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Understated Stat-like Highlights & Guest Rating */}
-            <div className="pt-6 border-t border-ivory-200 dark:border-chocolate-850/50 grid grid-cols-3 gap-4 sm:gap-8 max-w-xl">
-              {currentContent.stats.map((stat, idx) => (
-                <div key={idx} className="flex flex-col space-y-1">
-                  <span className="font-serif text-2xl sm:text-3xl font-bold text-[#C1682B] dark:text-[#DFB283]">
-                    {stat.val}{idx === 2 ? "★" : ""}
+            {/* Main Headline with Intertwined Script Word */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="space-y-0"
+            >
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[2.6rem] xl:text-[3.25rem] 2xl:text-[3.65rem] font-normal leading-[1.1] sm:leading-[1.08] tracking-[-0.01em] text-[#1C140F] dark:text-[#FAF7F2]">
+                <span className="inline-block relative">
+                  {content.titleLine1}
+                  {/* Fluid Hand-lettered Golden Cursive Word overlapping */}
+                  <span className="font-script font-normal text-[#C5832B] dark:text-[#E8A555] text-4xl sm:text-5xl md:text-6xl lg:text-[3.2rem] xl:text-[4rem] leading-none inline-block lowercase ml-2 sm:ml-3 -mr-1 relative -top-1 sm:-top-2 select-none drop-shadow-sm">
+                    {content.scriptWord}
                   </span>
-                  <span className="text-xs sm:text-sm text-chocolate-800 dark:text-ivory-300/80 font-sans font-light">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
+                </span>
+                <br />
+                <span className="block mt-1 sm:mt-2">
+                  {content.titleLine2}
+                </span>
+              </h2>
+            </motion.div>
+
+            {/* Narrative Editorial Copy */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-4 text-[#5A493D] dark:text-[#CCC1B5] text-sm sm:text-base leading-relaxed font-sans font-light max-w-xl"
+            >
+              <p className="leading-relaxed">
+                {content.p1}
+              </p>
+              <p className="leading-relaxed">
+                {content.p2}
+              </p>
+            </motion.div>
+
+            {/* Call To Action Buttons & Underline Link */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="pt-2 flex flex-wrap items-center gap-7 sm:gap-9"
+            >
+              <a
+                href="#menu"
+                className="group relative inline-flex items-center gap-2 pb-1.5 text-xs sm:text-sm font-sans font-semibold tracking-[0.18em] uppercase text-[#1C140F] dark:text-[#FAF7F2] hover:text-[#B86E2B] dark:hover:text-[#E8A555] transition-colors"
+              >
+                <span>{content.ctaText}</span>
+                <ArrowUpRight className="w-4 h-4 text-[#B86E2B] dark:text-[#E8A555] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                {/* Gold Accent Underline */}
+                <span className="absolute bottom-0 left-0 w-full h-[1.5px] bg-[#B86E2B] dark:bg-[#E8A555] transition-all duration-300 group-hover:h-[2px]" />
+              </a>
+
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-sans font-semibold tracking-[0.18em] uppercase text-[#735F50] dark:text-[#A89A8E] hover:text-[#B86E2B] dark:hover:text-[#E8A555] transition-colors"
+              >
+                <MapPin className="w-3.5 h-3.5 text-[#B86E2B] dark:text-[#E8A555] flex-shrink-0" />
+                <span>{content.mapText}</span>
+              </a>
+            </motion.div>
+
+          </div>
+
+          {/* RIGHT COLUMN: Layered Dual-Photo Composition with Illustrated Botanical Pattern Background */}
+          <div className="lg:col-span-6 xl:col-span-6 relative w-full flex items-center justify-center lg:justify-end min-h-[480px] sm:min-h-[580px] lg:min-h-[620px] pt-8 sm:pt-12 lg:pt-0">
+            
+            {/* Patterned Backdrop Canvas (Right Half Panel) */}
+            <div className="absolute right-[-6%] sm:right-[-3%] lg:right-[-30px] xl:right-[-50px] top-[-6%] sm:top-[-4%] bottom-[-6%] sm:bottom-[-4%] w-[90%] sm:w-[82%] lg:w-[85%] rounded-3xl sm:rounded-[2.5rem] bg-[#EFEAE0]/90 dark:bg-[#1E1814]/90 border border-[#E2D8CA]/70 dark:border-[#2C231D]/80 overflow-hidden shadow-sm pointer-events-none transition-colors duration-300">
+              
+              {/* Distinct Pizza & Restaurant Line-Art Pattern Overlay */}
+              <svg
+                className="absolute inset-0 w-full h-full opacity-[0.22] dark:opacity-[0.12] text-[#634835] dark:text-[#E8DCCF]"
+                xmlns="http://www.w3.org/2000/svg"
+                width="100%"
+                height="100%"
+              >
+                <defs>
+                  <pattern
+                    id="restaurant-pattern"
+                    width="190"
+                    height="190"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    {/* 1. PIZZA SLICE with pepperoni and crust */}
+                    <g transform="translate(15, 12) rotate(-10)">
+                      <path
+                        d="M 5,6 Q 22,0 38,6 L 22,46 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M 7,10 Q 22,5 36,10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.2"
+                      />
+                      {/* Pepperoni & Toppings */}
+                      <circle cx="19" cy="18" r="3" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                      <circle cx="28" cy="25" r="3.2" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                      <circle cx="20" cy="33" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                      <path d="M 12,24 Q 15,22 14,26" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                    </g>
+
+                    {/* 2. CHEF'S HAT (Toque Blanche) */}
+                    <g transform="translate(85, 14)">
+                      {/* Hat Band */}
+                      <path
+                        d="M 6,28 L 32,28 L 30,34 L 8,34 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinejoin="round"
+                      />
+                      {/* Puffy Crown */}
+                      <path
+                        d="M 6,28 C 0,22 2,10 11,12 C 13,4 25,4 27,12 C 36,10 38,22 32,28"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                      />
+                      <path d="M 13,16 L 14,27 M 25,16 L 24,27" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+                    </g>
+
+                    {/* 3. WINE BOTTLE & GLASS */}
+                    <g transform="translate(148, 12)">
+                      {/* Stemmed Wine Glass */}
+                      <path
+                        d="M 2,10 C 2,20 14,20 14,10 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                      />
+                      <path d="M 8,20 L 8,30 M 4,30 L 12,30" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                      {/* Wine Bottle */}
+                      <path
+                        d="M 24,4 L 28,4 L 28,9 C 25,13 22,16 22,21 L 22,34 L 30,34 L 30,21 C 30,16 27,13 24,9 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinejoin="round"
+                      />
+                      <path d="M 23,24 L 29,24" stroke="currentColor" strokeWidth="1.1" />
+                    </g>
+
+                    {/* 4. FORK & KNIFE (Crossed Cutlery) */}
+                    <g transform="translate(18, 76)">
+                      {/* Fork */}
+                      <path d="M 6,4 L 6,34 M 2,4 L 2,12 C 2,17 10,17 10,12 L 10,4 M 4,4 L 4,11 M 8,4 L 8,11" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                      {/* Knife */}
+                      <path d="M 20,4 C 24,4 26,10 26,18 L 22,20 L 22,34 L 20,34 L 20,4 Z" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                    </g>
+
+                    {/* 5. WOOD-FIRED PIZZA OVEN WITH FLAME */}
+                    <g transform="translate(80, 72)">
+                      {/* Oven Brick Arch */}
+                      <path
+                        d="M 4,28 C 4,10 32,10 32,28"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                      />
+                      <path d="M 0,28 L 36,28" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+                      {/* Oven Flame */}
+                      <path
+                        d="M 18,25 C 15,20 20,17 17,14 C 22,16 23,20 21,23 C 23,21 24,20 23,25 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.4"
+                        strokeLinejoin="round"
+                      />
+                      <path d="M 8,7 L 11,10 M 25,10 L 28,7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+                    </g>
+
+                    {/* 6. OLIVE BRANCH with OLIVES */}
+                    <g transform="translate(138, 74)">
+                      {/* Stem */}
+                      <path d="M 6,28 Q 20,18 36,4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                      {/* Leaves */}
+                      <path d="M 12,22 Q 8,12 18,14 Q 18,22 12,22 Z" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                      <path d="M 24,14 Q 22,4 32,7 Q 30,16 24,14 Z" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                      {/* Olives */}
+                      <ellipse cx="14" cy="27" rx="3" ry="4.5" transform="rotate(30 14 27)" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                      <ellipse cx="26" cy="19" rx="3" ry="4.5" transform="rotate(-20 26 19)" fill="none" stroke="currentColor" strokeWidth="1.3" />
+                    </g>
+
+                    {/* 7. SERVING CLOCHE (Restaurant Platter) */}
+                    <g transform="translate(14, 138)">
+                      {/* Platter Base */}
+                      <path d="M 2,24 L 34,24" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                      {/* Dome */}
+                      <path
+                        d="M 6,24 C 6,10 30,10 30,24 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                      />
+                      {/* Top Handle Knob */}
+                      <circle cx="18" cy="8" r="2.2" fill="none" stroke="currentColor" strokeWidth="1.4" />
+                    </g>
+
+                    {/* 8. WHOLE PIZZA ON WOODEN PEEL / BOARD */}
+                    <g transform="translate(80, 134)">
+                      {/* Round Pizza Board */}
+                      <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                      {/* Crust Ring */}
+                      <circle cx="18" cy="18" r="11.5" fill="none" stroke="currentColor" strokeWidth="1.1" strokeDasharray="3 2" />
+                      {/* Slice Lines */}
+                      <path d="M 4,18 L 32,18 M 18,4 L 18,32 M 8,8 L 28,28 M 8,28 L 28,8" stroke="currentColor" strokeWidth="1" />
+                      {/* Handle */}
+                      <path d="M 30,26 L 38,34" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                    </g>
+
+                    {/* 9. BASIL LEAF MOTIF & ROLLING PIN */}
+                    <g transform="translate(144, 136)">
+                      {/* Rolling Pin */}
+                      <path d="M 4,20 L 32,8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                      <path d="M 1,21 L 5,19 M 31,9 L 35,7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                      {/* Fresh Basil Leaf */}
+                      <path
+                        d="M 12,30 Q 6,18 20,18 Q 28,26 12,30 Z"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.3"
+                      />
+                      <path d="M 12,30 Q 15,24 20,18" stroke="currentColor" strokeWidth="1" />
+                    </g>
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#restaurant-pattern)" />
+              </svg>
+
+              {/* Soft warm gradient glow inside the panel */}
+              <div className="absolute top-0 right-0 w-80 h-80 bg-radial from-[#F5EAD4]/70 dark:from-[#35251B]/40 to-transparent blur-3xl" />
             </div>
 
-            {/* Integrated Google Reviews Highlight Snippet */}
-            {reviewsToRender.length > 0 && (
-              <div className="pt-6 border-t border-ivory-200 dark:border-chocolate-850/50">
-                <div className="flex items-center space-x-2 text-xs uppercase tracking-wider font-semibold text-chocolate-700/80 dark:text-ivory-300/70 mb-4">
-                  <svg className="h-4 w-4 fill-current text-[#C1682B]" viewBox="0 0 24 24">
-                    <path d="M12.24 10.285V13.4h6.887C18.2 15.614 15.645 18 12.24 18c-3.86 0-7-3.14-7-7s3.14-7 7-7c1.7 0 3.3.65 4.5 1.8l2.4-2.4C17.34 1.7 14.9 1 12.24 1c-6.075 0-11 4.925-11 11s4.925 11 11 11c6.353 0 10.57-4.468 10.57-10.772 0-.726-.078-1.272-.23-1.943H12.24z" />
-                  </svg>
-                  <span>Google Reviews ({dict.about.google_score.replace("4.5+", liveRating !== null ? liveRating.toFixed(1) : "4.8")})</span>
+            {/* Dual Overlapping Photographic Collage */}
+            <div className="relative w-full max-w-[560px] lg:max-w-none flex items-center justify-center lg:justify-end">
+              
+              {/* Photo 1: Left / Background-Portrait (Authentic Oven & Ambiance) */}
+              <motion.div
+                initial={{ opacity: 0, y: 30, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="relative z-10 w-[52%] sm:w-[48%] lg:w-[47%] xl:w-[46%] mr-[-8%] sm:mr-[-10%] lg:mr-[-12%] shadow-2xl rounded-2xl overflow-hidden border border-white/70 dark:border-[#382E26] bg-[#EAE4D8] dark:bg-[#201A16] group"
+              >
+                <div className="relative aspect-[3/4] sm:aspect-[4/5] w-full min-h-[290px] sm:min-h-[400px] lg:min-h-[460px] overflow-hidden">
+                  <Image
+                    src="/image/gallery/gallery-4.jpg"
+                    alt="Pizzeria Mandrać - Tradicionalna krušna peć i pizza majstor"
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 35vw, 30vw"
+                    className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    priority
+                  />
+                  {/* Subtle vignette gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 opacity-70 pointer-events-none" />
                 </div>
-                <div className="space-y-4">
-                  {reviewsToRender.slice(0, 2).map((review, idx) => (
-                    <ReviewItem key={`${idx}-${language}`} review={review} />
-                  ))}
-                </div>
-              </div>
-            )}
+              </motion.div>
 
-          </motion.div>
+              {/* Photo 2: Right / Foreground-Overlapping (Vibrant Food & Table Setting) */}
+              <motion.div
+                initial={{ opacity: 0, y: -20, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="relative z-20 w-[54%] sm:w-[50%] lg:w-[49%] xl:w-[48%] -mt-12 sm:-mt-16 lg:-mt-20 shadow-2xl rounded-2xl overflow-hidden border-2 sm:border-4 border-[#FAF7F2] dark:border-[#151210] bg-[#EAE4D8] dark:bg-[#201A16] group"
+              >
+                <div className="relative aspect-[4/5] sm:aspect-[1/1] lg:aspect-[4/5] w-full min-h-[270px] sm:min-h-[380px] lg:min-h-[440px] overflow-hidden">
+                  <Image
+                    src="/image/gallery/gallery-1.jpg"
+                    alt="Pizzeria Mandrać - Svježe pečena pizza i vino uz more"
+                    fill
+                    sizes="(max-width: 768px) 55vw, (max-width: 1200px) 38vw, 32vw"
+                    className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                    priority
+                  />
+                  {/* Subtle top-down overlay glow */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-50 pointer-events-none" />
+                </div>
+
+                {/* Floating micro-badge on the corner */}
+                <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-[#FAF7F2]/95 dark:bg-[#1A1512]/95 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-full border border-black/5 dark:border-white/10 shadow-sm pointer-events-none">
+                  <span className="text-[10px] sm:text-xs font-sans font-medium tracking-wider text-[#1C140F] dark:text-[#FAF7F2] uppercase">
+                    Wood-Fired • Zidarići
+                  </span>
+                </div>
+              </motion.div>
+
+            </div>
+
+          </div>
 
         </div>
-
       </div>
     </section>
   );
 }
+

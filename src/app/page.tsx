@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import AboutUs from "@/components/AboutUs";
 import MenuSection from "@/components/Menu/MenuSection";
 import GallerySection from "@/components/GallerySection";
+import ReviewsSection from "@/components/ReviewsSection";
 import Footer from "@/components/Footer";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import VacationModal from "@/components/VacationModal";
@@ -32,6 +33,9 @@ export default function Home() {
 
         {/* Photo Gallery Carousel Section */}
         <GallerySection />
+
+        {/* Customer Reviews & Google Score Section */}
+        <ReviewsSection />
       </main>
 
       {/* Footer Area with consolidated Address, Hours, Maps and Action Box */}

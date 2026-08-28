@@ -49,12 +49,11 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Massive Editorial Serif Title */}
           <motion.h1
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-            className="font-serif text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight text-white leading-[0.95] uppercase drop-shadow-xl"
+            className="font-serif text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight text-white leading-[0.98] uppercase drop-shadow-xl"
           >
             Pizzeria Mandrać
           </motion.h1>
@@ -106,7 +105,7 @@ export default function Hero() {
         className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center text-ivory-200 hover:text-white transition-colors cursor-pointer group"
       >
         <span className="text-[10px] sm:text-xs font-sans tracking-[0.25em] uppercase font-semibold text-[#DFB283] mb-1">
-          Istražite
+          {dict.hero?.explore || "ISTRAŽITE"}
         </span>
         <ChevronDown className="h-5 w-5 text-white/80 group-hover:text-white transition-colors" />
       </motion.a>

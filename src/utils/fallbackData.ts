@@ -31,7 +31,8 @@ export const FALLBACK_SITE_CONTENT = {
       subtitle: "Domaća pizza iz krušne peći, sočni roštilj i pogled na more u Zidarićima na otoku Krku.",
       desc: "Svakodnevno za vas pripremamo domaće pizze iz krušne peći, sočna jela s roštilja i svježe specijalitete. Outdoor terasasti ugođaj, besplatan Wi-Fi i prilagođeno obiteljima.",
       ctaMenu: "Pogledaj jelovnik",
-      ctaBook: "Rezerviraj stol"
+      ctaBook: "Rezerviraj stol",
+      explore: "ISTRAŽITE"
     },
     about: {
       tagline: "Kvalitetna hrana & opušten ambijent",
@@ -103,7 +104,8 @@ export const FALLBACK_SITE_CONTENT = {
       subtitle: "Homemade wood-fired pizza, juicy charcoal grill, and a sea view in Zidarići on Krk island.",
       desc: "Every day we prepare homemade wood-fired pizzas, juicy grilled meats, and fresh island specialties. Outdoor seating, free Wi-Fi, and family friendly.",
       ctaMenu: "View Menu",
-      ctaBook: "Book a Table"
+      ctaBook: "Book a Table",
+      explore: "EXPLORE"
     },
     about: {
       tagline: "Quality food & relaxed atmosphere",
@@ -175,7 +177,8 @@ export const FALLBACK_SITE_CONTENT = {
       subtitle: "Pizza fatta in casa dal forno a legna, carne alla griglia e vista mare a Zidarići sull'isola di Krk.",
       desc: "Ogni giorno prepariamo pizze fatte in casa dal forno a legna, succulenti piatti alla griglia e specialità fresche. Terrazza all'aperto, Wi-Fi gratuito e ambiente ideale per famiglie.",
       ctaMenu: "Vedi il menu",
-      ctaBook: "Prenota un tavolo"
+      ctaBook: "Prenota un tavolo",
+      explore: "ESPLORA"
     },
     about: {
       tagline: "Cibo di qualità e atmosfera rilassata",
@@ -247,7 +250,8 @@ export const FALLBACK_SITE_CONTENT = {
       subtitle: "Hausgemachte Holzofenpizza, saftiges vom Grill und Meerblick in Zidarići auf der Insel Krk.",
       desc: "Jeden Tag bereiten wir hausgemachte Holzofenpizzen, saftige Grillgerichte und frische Spezialitäten zu. Außenterrasse, kostenloses WLAN und familienfreundlich.",
       ctaMenu: "Speisekarte ansehen",
-      ctaBook: "Tisch reservieren"
+      ctaBook: "Tisch reservieren",
+      explore: "ENTDECKEN"
     },
     about: {
       tagline: "Qualitätsessen & entspannte Atmosphäre",

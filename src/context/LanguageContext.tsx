@@ -19,6 +19,7 @@ interface TranslationDictionary {
     desc: string;
     ctaMenu: string;
     ctaBook: string;
+    explore?: string;
   };
   about: {
     tagline: string;
@@ -42,9 +43,9 @@ interface TranslationDictionary {
     categories: {
       pizze: string;
       rostilj: string;
-      peka: string;
-      riba: string;
-      predjela_deserti: string;
+      predjela: string;
+      deserti: string;
+      salate: string;
     };
   };
   footer: {

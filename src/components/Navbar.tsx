@@ -163,7 +163,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="fixed inset-0 top-[70px] z-40 bg-[#1A1512]/98 backdrop-blur-lg md:hidden flex flex-col justify-center px-6 py-12 border-t border-chocolate-850/50"
+            className="fixed inset-0 top-[70px] z-40 bg-[#1A1512]/98 backdrop-blur-lg md:hidden flex flex-col justify-center px-6 py-12 border-t border-chocolate-850/50 overflow-y-auto max-h-[calc(100vh-70px)]"
           >
             <nav className="flex flex-col space-y-7 items-center text-center">
               {navLinks.map((link, idx) => (

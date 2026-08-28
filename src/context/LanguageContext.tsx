@@ -92,6 +92,11 @@ interface LanguageContextProps {
 
 const LanguageContext = createContext<LanguageContextProps | undefined>(undefined);
 
+const DEFAULT_SWR_FALLBACK = {
+  siteContent: [],
+  settings: { vacation_start: null, vacation_end: null }
+};
+
 export function LanguageProvider({
   children,
   initialSiteContent,
@@ -116,10 +121,7 @@ export function LanguageProvider({
   // Fetch site content dynamically via SWR to silently update translations and settings in background
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
   const { data: liveData } = useSWR("/api/site_content", fetcher, {
-    fallbackData: {
-      siteContent: [],
-      settings: initialSettings || { vacation_start: null, vacation_end: null }
-    },
+    fallbackData: DEFAULT_SWR_FALLBACK,
     revalidateOnFocus: false
   });
 

@@ -67,6 +67,17 @@ export default function GallerySection() {
         de: "Sonnenuntergang über Malinska",
       },
     },
+    {
+      src: "/image/hero.jpg",
+      alt: "Pizzeria Mandrać - Pizzeria Mandrać uz more",
+      label: "PIZZERIA MANDRAĆ",
+      description: {
+        hr: "Pizzeria Mandrać uz more",
+        en: "Pizzeria Mandrać by the sea",
+        it: "Pizzeria Mandrać vicino al mare",
+        de: "Pizzeria Mandrać am Meer",
+      },
+    },
   ];
 
   // Dynamically track viewport breakpoint to adjust card step shifting

@@ -346,7 +346,7 @@ export default function AboutUs() {
             {/* Dual Overlapping Photographic Collage */}
             <div className="relative w-full max-w-[560px] lg:max-w-none flex items-center justify-center lg:justify-end">
               
-              {/* Photo 1: Left / Background-Portrait (Authentic Oven & Ambiance) */}
+              {/* Photo 1: Left / Background-Portrait */}
               <motion.div
                 initial={{ opacity: 0, y: 30, scale: 0.96 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -356,8 +356,8 @@ export default function AboutUs() {
               >
                 <div className="relative aspect-[3/4] sm:aspect-[4/5] w-full min-h-[290px] sm:min-h-[400px] lg:min-h-[460px] overflow-hidden">
                   <Image
-                    src="/image/gallery/gallery-4.jpg"
-                    alt="Pizzeria Mandrać - Tradicionalna krušna peć i pizza majstor"
+                    src="/image/galerija5.jpg"
+                    alt="Pizzeria Mandrać - Mediteranski ugođaj i zalazak sunca"
                     fill
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 35vw, 30vw"
                     className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
@@ -368,7 +368,7 @@ export default function AboutUs() {
                 </div>
               </motion.div>
 
-              {/* Photo 2: Right / Foreground-Overlapping (Vibrant Food & Table Setting) */}
+              {/* Photo 2: Right / Foreground-Overlapping */}
               <motion.div
                 initial={{ opacity: 0, y: -20, scale: 0.96 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -378,8 +378,8 @@ export default function AboutUs() {
               >
                 <div className="relative aspect-[4/5] sm:aspect-[1/1] lg:aspect-[4/5] w-full min-h-[270px] sm:min-h-[380px] lg:min-h-[440px] overflow-hidden">
                   <Image
-                    src="/image/gallery/gallery-1.jpg"
-                    alt="Pizzeria Mandrać - Svježe pečena pizza i vino uz more"
+                    src="/image/gada2.png"
+                    alt="Pizzeria Mandrać - Specijaliteti pizzerije i ugođaj"
                     fill
                     sizes="(max-width: 768px) 55vw, (max-width: 1200px) 38vw, 32vw"
                     className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
@@ -387,13 +387,6 @@ export default function AboutUs() {
                   />
                   {/* Subtle top-down overlay glow */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-50 pointer-events-none" />
-                </div>
-
-                {/* Floating micro-badge on the corner */}
-                <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-[#FAF7F2]/95 dark:bg-[#1A1512]/95 backdrop-blur-md px-3 py-1 sm:py-1.5 rounded-full border border-black/5 dark:border-white/10 shadow-sm pointer-events-none">
-                  <span className="text-[10px] sm:text-xs font-sans font-medium tracking-wider text-[#1C140F] dark:text-[#FAF7F2] uppercase">
-                    Wood-Fired • Zidarići
-                  </span>
                 </div>
               </motion.div>
 

@@ -35,8 +35,15 @@ const alexBrush = Alex_Brush({
 });
 
 export const metadata: Metadata = {
-  title: "Pizzeria Mandrać | Malinska Krk Island Pizzeria & Grill",
+  title: "Pizzeria Mandrać",
   description: "Enjoy authentic wood-fired pizzas, charcoal grill, and delicious meals at Pizzeria Mandrać in Zidarići, Malinska, Krk Island, Croatia.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 const jsonLd = {

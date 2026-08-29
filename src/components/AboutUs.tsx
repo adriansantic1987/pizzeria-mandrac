@@ -80,8 +80,8 @@ export default function AboutUs() {
       id="about"
       className="relative overflow-hidden bg-[#FAF7F2] dark:bg-[#151210] text-[#32231A] dark:text-[#EFE9DF] transition-colors duration-300 py-20 sm:py-28 lg:py-36 border-b border-[#EAE3D6] dark:border-[#28211B]"
     >
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-12 xl:px-16 2xl:px-20 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 xl:gap-16 2xl:gap-20 items-center">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 2xl:px-20 relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 xl:gap-16 2xl:gap-20 items-center">
           
           {/* LEFT COLUMN: Editorial Typography, Overlapping Script Headline & Narrative */}
           <div className="lg:col-span-6 xl:col-span-6 z-10 space-y-6 sm:space-y-8 pr-0 lg:pr-2 xl:pr-6">
@@ -107,11 +107,11 @@ export default function AboutUs() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="space-y-0"
             >
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-[2.6rem] xl:text-[3.25rem] 2xl:text-[3.65rem] font-normal leading-[1.1] sm:leading-[1.08] tracking-[-0.01em] text-[#1C140F] dark:text-[#FAF7F2]">
+              <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-[2.6rem] xl:text-[3.25rem] 2xl:text-[3.65rem] font-normal leading-[1.15] sm:leading-[1.08] tracking-[-0.01em] text-[#1C140F] dark:text-[#FAF7F2] break-words">
                 <span className="inline-block relative">
                   {content.titleLine1}
                   {/* Fluid Hand-lettered Golden Cursive Word overlapping */}
-                  <span className="font-script font-normal text-[#C5832B] dark:text-[#E8A555] text-4xl sm:text-5xl md:text-6xl lg:text-[3.2rem] xl:text-[4rem] leading-none inline-block lowercase ml-2 sm:ml-3 -mr-1 relative -top-1 sm:-top-2 select-none drop-shadow-sm">
+                  <span className="font-script font-normal text-[#C5832B] dark:text-[#E8A555] text-3xl sm:text-5xl md:text-6xl lg:text-[3.2rem] xl:text-[4rem] leading-none inline-block lowercase ml-2 sm:ml-3 -mr-1 relative -top-0.5 sm:-top-2 select-none drop-shadow-sm">
                     {content.scriptWord}
                   </span>
                 </span>
@@ -144,7 +144,7 @@ export default function AboutUs() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="pt-2 flex flex-wrap items-center gap-7 sm:gap-9"
+              className="pt-2 flex flex-wrap items-center gap-5 sm:gap-9"
             >
               <a
                 href="#menu"
@@ -168,10 +168,10 @@ export default function AboutUs() {
           </div>
 
           {/* RIGHT COLUMN: Layered Dual-Photo Composition with Illustrated Botanical Pattern Background */}
-          <div className="lg:col-span-6 xl:col-span-6 relative w-full flex items-center justify-center lg:justify-end min-h-[480px] sm:min-h-[580px] lg:min-h-[620px] pt-8 sm:pt-12 lg:pt-0">
+          <div className="lg:col-span-6 xl:col-span-6 relative w-full flex items-center justify-center lg:justify-end min-h-[380px] sm:min-h-[520px] lg:min-h-[620px] pt-4 sm:pt-8 lg:pt-0 overflow-hidden">
             
-            {/* Patterned Backdrop Canvas (Right Half Panel) */}
-            <div className="absolute right-[-6%] sm:right-[-3%] lg:right-[-30px] xl:right-[-50px] top-[-6%] sm:top-[-4%] bottom-[-6%] sm:bottom-[-4%] w-[90%] sm:w-[82%] lg:w-[85%] rounded-3xl sm:rounded-[2.5rem] bg-[#EFEAE0]/90 dark:bg-[#1E1814]/90 border border-[#E2D8CA]/70 dark:border-[#2C231D]/80 overflow-hidden shadow-sm pointer-events-none transition-colors duration-300">
+            {/* Patterned Backdrop Canvas (Right Panel) */}
+            <div className="absolute right-0 lg:right-[-30px] xl:right-[-50px] top-0 lg:top-[-4%] bottom-0 lg:bottom-[-4%] w-full lg:w-[85%] rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem] bg-[#EFEAE0]/90 dark:bg-[#1E1814]/90 border border-[#E2D8CA]/70 dark:border-[#2C231D]/80 overflow-hidden shadow-sm pointer-events-none transition-colors duration-300">
               
               {/* Distinct Pizza & Restaurant Line-Art Pattern Overlay */}
               <svg
@@ -352,7 +352,7 @@ export default function AboutUs() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="relative z-10 w-[52%] sm:w-[48%] lg:w-[47%] xl:w-[46%] mr-[-8%] sm:mr-[-10%] lg:mr-[-12%] shadow-2xl rounded-2xl overflow-hidden border border-white/70 dark:border-[#382E26] bg-[#EAE4D8] dark:bg-[#201A16] group"
+                className="relative z-10 w-[50%] sm:w-[48%] lg:w-[47%] xl:w-[46%] mr-[-3%] sm:mr-[-8%] lg:mr-[-12%] shadow-2xl rounded-2xl overflow-hidden border border-white/70 dark:border-[#382E26] bg-[#EAE4D8] dark:bg-[#201A16] group"
               >
                 <div className="relative aspect-[3/4] sm:aspect-[4/5] w-full min-h-[290px] sm:min-h-[400px] lg:min-h-[460px] overflow-hidden">
                   <Image

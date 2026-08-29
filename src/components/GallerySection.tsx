@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Camera } from "lucide-react";
@@ -8,134 +8,97 @@ import { useLanguage } from "@/context/LanguageContext";
 
 export default function GallerySection() {
   const { language, dict } = useLanguage();
-  const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [visibleCards, setVisibleCards] = useState(3);
 
   const galleryImages = [
     {
-      src: "/image/gallery/gallery-1.jpg",
-      alt: "Svježa domaća pizza iz krušne peći i vino uz more",
-      tag: {
-        hr: "Krušna peć & More",
-        en: "Wood-Fired & Sea",
-        it: "Forno a Legna & Mare",
-        de: "Holzofen & Meer",
+      src: "/image/galerija.png",
+      alt: "Pizzeria Mandrać - Domaća riba",
+      label: "PIZZERIA MANDRAĆ",
+      description: {
+        hr: "Domaća riba",
+        en: "Fresh local fish",
+        it: "Pesce fresco locale",
+        de: "Frischer lokaler Fisch",
       },
     },
     {
-      src: "/image/gallery/gallery-2.jpg",
-      alt: "Jela s roštilja na prirodnom ugljenu s pogledom na zalazak sunca",
-      tag: {
-        hr: "Žar drvenog ugljena",
-        en: "Natural Charcoal Grill",
-        it: "Brace a Carbone",
-        de: "Holzkohlegrill",
+      src: "/image/galerija1.png",
+      alt: "Pizzeria Mandrać - Terasa Pizzerie Mandrać",
+      label: "PIZZERIA MANDRAĆ",
+      description: {
+        hr: "Terasa Pizzerie Mandrać",
+        en: "Pizzeria Mandrać Terrace",
+        it: "Terrazza della Pizzeria Mandrać",
+        de: "Terrasse der Pizzeria Mandrać",
       },
     },
     {
-      src: "/image/gallery/gallery-3.jpg",
-      alt: "Ljetna terasa Pizzerije Mandrać u uvali Zidarići",
-      tag: {
-        hr: "Otočka terasa uz more",
-        en: "Seaside Dining Terrace",
-        it: "Terrazza sul Mare",
-        de: "Terrasse am Meer",
+      src: "/image/galerija2.png",
+      alt: "Pizzeria Mandrać - Specijalitet kuće – Pizza s dagnjama",
+      label: "PIZZERIA MANDRAĆ",
+      description: {
+        hr: "Specijalitet kuće – Pizza s dagnjama",
+        en: "House specialty – Mussel pizza",
+        it: "Specialità della casa – Pizza con cozze",
+        de: "Hausspezialität – Muschelpizza",
       },
     },
     {
-      src: "/image/gallery/gallery-4.jpg",
-      alt: "Tradicija pripreme hrskavog tijesta i pečenja pizze",
-      tag: {
-        hr: "Majstorska priprema pizze",
-        en: "Artisan Pizzaiolo Craft",
-        it: "Arte della Pizza",
-        de: "Traditionelle Pizzakunst",
+      src: "/image/galerija3.png",
+      alt: "Pizzeria Mandrać - Pogled iz pizzerie",
+      label: "PIZZERIA MANDRAĆ",
+      description: {
+        hr: "Pogled iz pizzerie",
+        en: "View from the pizzeria",
+        it: "Vista dalla pizzeria",
+        de: "Blick aus der Pizzeria",
+      },
+    },
+    {
+      src: "/image/galerija5.jpg",
+      alt: "Pizzeria Mandrać - Zalazak sunca nad Malinskom",
+      label: "PIZZERIA MANDRAĆ",
+      description: {
+        hr: "Zalazak sunca nad Malinskom",
+        en: "Sunset over Malinska",
+        it: "Tramonto su Malinska",
+        de: "Sonnenuntergang über Malinska",
       },
     },
   ];
 
-  const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const container = scrollRef.current;
-    const maxScroll = container.scrollWidth - container.clientWidth;
-
-    // If scrolled at or near the end of the container, activate the last slide
-    if (maxScroll > 0 && container.scrollLeft >= maxScroll - 25) {
-      setActiveIndex(galleryImages.length - 1);
-      return;
-    }
-
-    // If scrolled at or near the start, activate the first slide
-    if (container.scrollLeft <= 25) {
-      setActiveIndex(0);
-      return;
-    }
-
-    const cards = container.querySelectorAll<HTMLElement>(".gallery-card");
-    if (!cards.length) return;
-
-    const containerCenter = container.scrollLeft + container.clientWidth / 2;
-    let closestIndex = 0;
-    let minDistance = Infinity;
-
-    cards.forEach((card, idx) => {
-      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-      const distance = Math.abs(containerCenter - cardCenter);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = idx;
-      }
-    });
-
-    setActiveIndex(closestIndex);
-  };
-
-  const scrollToSlide = (index: number) => {
-    if (!scrollRef.current) return;
-    const container = scrollRef.current;
-    const cards = container.querySelectorAll<HTMLElement>(".gallery-card");
-
-    if (index === 0) {
-      container.scrollTo({ left: 0, behavior: "smooth" });
-      setActiveIndex(0);
-      return;
-    }
-
-    if (index === galleryImages.length - 1) {
-      const maxScroll = container.scrollWidth - container.clientWidth;
-      container.scrollTo({ left: maxScroll, behavior: "smooth" });
-      setActiveIndex(galleryImages.length - 1);
-      return;
-    }
-
-    if (cards[index]) {
-      const card = cards[index];
-      const scrollTarget = card.offsetLeft - (container.clientWidth - card.offsetWidth) / 2;
-      container.scrollTo({
-        left: Math.max(0, Math.min(scrollTarget, container.scrollWidth - container.clientWidth)),
-        behavior: "smooth",
-      });
-      setActiveIndex(index);
-    }
-  };
-
-  const scrollPrev = () => {
-    const nextIndex = Math.max(activeIndex - 1, 0);
-    scrollToSlide(nextIndex);
-  };
-
-  const scrollNext = () => {
-    const nextIndex = Math.min(activeIndex + 1, galleryImages.length - 1);
-    scrollToSlide(nextIndex);
-  };
-
+  // Dynamically track viewport breakpoint to adjust card step shifting
   useEffect(() => {
-    const container = scrollRef.current;
-    if (container) {
-      container.addEventListener("scroll", handleScroll, { passive: true });
-      return () => container.removeEventListener("scroll", handleScroll);
-    }
+    const updateVisibleCards = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) {
+        setVisibleCards(3);
+      } else if (width >= 640) {
+        setVisibleCards(2);
+      } else {
+        setVisibleCards(1);
+      }
+    };
+
+    updateVisibleCards();
+    window.addEventListener("resize", updateVisibleCards);
+    return () => window.removeEventListener("resize", updateVisibleCards);
   }, []);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => Math.min(prev + 1, galleryImages.length - 1));
+  };
+
+  // Calculate track transform offset percentage
+  const maxShiftIndex = Math.max(0, galleryImages.length - visibleCards);
+  const effectiveShiftIndex = Math.min(activeIndex, maxShiftIndex);
+  const translatePercentage = effectiveShiftIndex * (100 / visibleCards);
 
   return (
     <section
@@ -190,15 +153,15 @@ export default function GallerySection() {
 
       </div>
 
-      {/* Relative Wrapper for Navigation Arrows & Gallery Slider */}
-      <div className="relative max-w-[1440px] mx-auto z-10 px-3 sm:px-8">
+      {/* Multi-Image Carousel Track Container */}
+      <div className="relative max-w-[1440px] mx-auto z-10 px-4 sm:px-10 lg:px-12">
 
         {/* Left Arrow Button */}
         <button
-          onClick={scrollPrev}
+          onClick={handlePrev}
           disabled={activeIndex === 0}
-          aria-label="Previous photos"
-          className={`absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-3.5 rounded-full bg-white/95 dark:bg-[#1A1512]/95 hover:bg-[#B86E2B] hover:text-white dark:hover:bg-[#B86E2B] text-[#1C140F] dark:text-[#FAF7F2] border border-[#E0D5C7] dark:border-[#382E26] shadow-md backdrop-blur-md transition-all duration-300 cursor-pointer ${
+          aria-label="Previous photo"
+          className={`absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-3.5 rounded-full bg-white/95 dark:bg-[#1A1512]/95 hover:bg-[#B86E2B] hover:text-white dark:hover:bg-[#B86E2B] text-[#1C140F] dark:text-[#FAF7F2] border border-[#E0D5C7] dark:border-[#382E26] shadow-md backdrop-blur-md transition-all duration-300 cursor-pointer ${
             activeIndex === 0 ? "opacity-25 cursor-not-allowed" : "hover:scale-105 active:scale-95"
           }`}
         >
@@ -207,62 +170,81 @@ export default function GallerySection() {
 
         {/* Right Arrow Button */}
         <button
-          onClick={scrollNext}
-          disabled={activeIndex === galleryImages.length - 1}
-          aria-label="Next photos"
-          className={`absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-3.5 rounded-full bg-white/95 dark:bg-[#1A1512]/95 hover:bg-[#B86E2B] hover:text-white dark:hover:bg-[#B86E2B] text-[#1C140F] dark:text-[#FAF7F2] border border-[#E0D5C7] dark:border-[#382E26] shadow-md backdrop-blur-md transition-all duration-300 cursor-pointer ${
-            activeIndex === galleryImages.length - 1 ? "opacity-25 cursor-not-allowed" : "hover:scale-105 active:scale-95"
+          onClick={handleNext}
+          disabled={activeIndex >= Math.max(0, galleryImages.length - visibleCards)}
+          aria-label="Next photo"
+          className={`absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 p-3 sm:p-3.5 rounded-full bg-white/95 dark:bg-[#1A1512]/95 hover:bg-[#B86E2B] hover:text-white dark:hover:bg-[#B86E2B] text-[#1C140F] dark:text-[#FAF7F2] border border-[#E0D5C7] dark:border-[#382E26] shadow-md backdrop-blur-md transition-all duration-300 cursor-pointer ${
+            activeIndex >= Math.max(0, galleryImages.length - visibleCards) ? "opacity-25 cursor-not-allowed" : "hover:scale-105 active:scale-95"
           }`}
         >
           <ChevronRight className="h-5 w-5" />
         </button>
 
-        {/* Horizontal Carousel Track with Clean Photographic Gallery Cards */}
-        <div
-          ref={scrollRef}
-          className="flex space-x-5 sm:space-x-7 overflow-x-auto scrollbar-none snap-x snap-mandatory scroll-smooth py-4 px-4 sm:px-12"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          {galleryImages.map((img, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, scale: 0.96 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.08 }}
-              className="gallery-card w-[80vw] sm:w-[440px] lg:w-[500px] min-h-[260px] sm:min-h-[300px] lg:min-h-[340px] flex-shrink-0 snap-center rounded-3xl overflow-hidden border border-[#EAE3D6] dark:border-[#2C231D] relative aspect-[16/11] group select-none bg-[#EAE4D8] dark:bg-[#201A16]"
-            >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                sizes="(max-width: 640px) 80vw, (max-width: 1024px) 440px, 500px"
-                className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-              />
+        {/* Viewport Frame */}
+        <div className="overflow-hidden rounded-3xl py-2">
+          
+          {/* Framer Motion Smooth Controlled Track with Touch Drag Support */}
+          <motion.div
+            className="flex cursor-grab active:cursor-grabbing touch-pan-y"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.15}
+            onDragEnd={(_, { offset }) => {
+              if (offset.x < -40 && activeIndex < galleryImages.length - 1) {
+                handleNext();
+              } else if (offset.x > 40 && activeIndex > 0) {
+                handlePrev();
+              }
+            }}
+            animate={{ x: `-${translatePercentage}%` }}
+            transition={{ type: "spring", stiffness: 280, damping: 28 }}
+          >
+            {galleryImages.map((img, idx) => (
+              <div
+                key={idx}
+                className="w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-2 sm:px-3 select-none"
+              >
+                <div className="gallery-card relative aspect-[16/11] rounded-3xl overflow-hidden border border-[#EAE3D6] dark:border-[#2C231D] bg-[#EAE4D8] dark:bg-[#201A16] shadow-md group">
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    priority={idx === 0}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                  />
 
-              {/* Minimal Frosted Glass Gallery Tag Badge (Fades in cleanly on hover) */}
-              <div className="absolute bottom-4 left-4 z-10 opacity-90 sm:opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-                <div className="flex items-center gap-2 bg-[#FAF7F2]/90 dark:bg-[#1A1512]/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-black/5 dark:border-white/10 shadow-sm">
-                  <Camera className="w-3.5 h-3.5 text-[#B86E2B] dark:text-[#E8A555]" />
-                  <span className="text-xs font-sans font-medium text-[#1C140F] dark:text-[#FAF7F2]">
-                    {img.tag[language as keyof typeof img.tag] || img.tag.hr}
-                  </span>
+                  {/* Dark gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent pointer-events-none" />
+
+                  {/* Bottom-Left Brand Accent & Caption Label Overlay */}
+                  <div className="absolute bottom-3.5 left-4 right-4 z-10 pointer-events-none">
+                    <div className="flex flex-col items-start gap-0.5">
+                      <span className="text-[10px] sm:text-[11px] font-sans font-bold tracking-[0.2em] text-[#E8A555] uppercase">
+                        {img.label}
+                      </span>
+                      <p className="text-xs sm:text-sm font-serif font-medium text-white drop-shadow-md leading-tight">
+                        {img.description[language as keyof typeof img.description] || img.description.hr}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </motion.div>
-          ))}
+            ))}
+          </motion.div>
+
         </div>
 
-        {/* Pagination Pill Dots Indicator */}
-        <div className="flex items-center justify-center space-x-2 pt-4 sm:pt-6">
-          {galleryImages.map((_, idx) => (
+        {/* Responsive Pagination Dots (3 dots on desktop for 3 valid view positions) */}
+        <div className="flex items-center justify-center space-x-2.5 pt-6 sm:pt-8">
+          {Array.from({ length: Math.max(1, galleryImages.length - visibleCards + 1) }).map((_, idx) => (
             <button
               key={idx}
-              onClick={() => scrollToSlide(idx)}
-              aria-label={`Go to slide ${idx + 1}`}
+              onClick={() => setActiveIndex(idx)}
+              aria-label={`Go to slide position ${idx + 1}`}
               className={`transition-all duration-300 cursor-pointer ${
                 activeIndex === idx
-                  ? "w-8 h-2 bg-[#B86E2B] dark:bg-[#E8A555] rounded-full shadow-sm"
+                  ? "w-8 h-2.5 bg-[#B86E2B] dark:bg-[#E8A555] rounded-full shadow-sm"
                   : "w-2.5 h-2.5 bg-[#D5C9B9] dark:bg-[#3D3025] hover:bg-[#B86E2B]/50 rounded-full"
               }`}
             />
@@ -273,5 +255,3 @@ export default function GallerySection() {
     </section>
   );
 }
-
-
